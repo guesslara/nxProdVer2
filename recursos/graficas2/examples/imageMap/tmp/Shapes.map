@@ -1,0 +1,8 @@
+CIRCLE300,120,50#ffa5a9CircleMy Message
+POLY402,62,460,80,420,190,360,168#475791PolygonMy Message
+RECT20,60,210,170#96c8aaBox 1Message 1
+RECT30,30,200,200#d1861bBox 2Message 2
+RECT480,50,650,80#d11f1bBox 3Message 3
+RECT480,90,650,120#d17d1bBox 4Message 4
+RECT480,130,650,160#d1c61bBox 5Message 5
+RECT480,170,650,200#86d11bBox 6Message 6
