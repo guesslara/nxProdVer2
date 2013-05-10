@@ -118,7 +118,11 @@
             <div class="datosUsuarioAppPrincipal" onclick="mostrarPerfilUsuario()" title="Ver Perfil del Usuario"><?=$_SESSION[$txtApp['session']['nombreUsuario']]." ".$_SESSION[$txtApp['session']['apellidoUsuario']];?></div>
         </div>
         <div id="menu" class="barraMenu" style="z-index: 50;height: 25px;">
-<?          $objPermisos->construyeMenuNuevo($_SESSION[$txtApp['session']['idUsuario']]);?>            
+<?          $objPermisos->construyeMenuNuevo($_SESSION[$txtApp['session']['idUsuario']]);?>
+	    <span style="float: right;">
+		Buscar:<input type="text" name="" id="">
+		
+	    </span>
         </div>
         <div id="contenedorVentanaMDI">
             <iframe id="contenedorVentana" name="contenedorVentana" class="contenedorVentanaMDIApp"></iframe>

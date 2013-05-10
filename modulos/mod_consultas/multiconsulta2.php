@@ -30,13 +30,7 @@ if(!empty($_POST)){
 			//echo $m_data[$i]."<br>";
 			$sql="select id_radio,modelo,imei,serial,sim,lote,status,status_nextel,statusProceso,statusDesensamble,statusDiagnostico,statusAlmacen,statusIngenieria,statusEmpaque,lineaEnsamble,facturar 
 			from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo 
-			where imei='".$m_data[$i]."'";
-			/*********************/
-			//$sql_in=str_replace(",","','",$_POST["data"]);
-			//echo "<br>".
-			/*$sql="select id_radio,modelo,imei,serial,sim,lote,status,status_nextel 
-				from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo 
-				where imei in ('$sql_in') ORDER by imei DESC";	*/
+			where imei='".$m_data[$i]."'";			
 			$res=mysql_query($sql,$link);
 			if(mysql_num_rows($res) != 0){
 				//se encontro en la tabla de equipos
