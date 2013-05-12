@@ -31,12 +31,8 @@ function buscarRegistros(){
 	var filtro=document.getElementById("cboFiltroBusqueda").value;
 	if(imeiEnsamble=="" || imeiEnsamble==null || filtro=="--"){
 		alert("Introduzca un parametro valido o verifique el filtro de Busqueda.");
-	}else{
-		//ajaxApp("div_grid_ensamble","controladorEnsamble.php","action=actualizaStatusEquipo&imeiEnsamble="+imeiEnsamble,"GET"); 
-		/*contadorGrid+=1;
-		$("#div_grid_ensamble").append("<div><input type='checkbox' checked='checked' name='cboImeiCapturado' id='cboImeiCapturado' value='"+imeiEnsamble+"' /><input type='text' name='' id='' value='"+imeiEnsamble+"' readonly='readonly' /></div>");
-		$("#agregado").html("Equipos en el listado: "+contadorGrid);*/
-		ajaxApp("div_grid_ensamble","controladorEnsamble.php","action=buscarEquipo&imei="+imeiEnsamble+"&filtro="+filtro,"POST");
+	}else{		
+		ajaxApp("eqProceso","controladorEnsamble.php","action=buscarEquipo&imei="+imeiEnsamble+"&filtro="+filtro,"POST");
 	}
 	document.getElementById("txtImeiEnsamble").value="";
 }

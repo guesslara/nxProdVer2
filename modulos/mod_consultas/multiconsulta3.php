@@ -36,10 +36,12 @@ td{ /**/ border-right:#ccc 1px solid; border-bottom:#ccc 1px solid;text-align:ce
 
 .tr_hover:hover{ background-color:#efefcc;}    
     
-.estiloBuscar{float: left;width: 100px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:12px;text-align:center;}
+.estiloBuscar{float: left;width: 158px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:12px;text-align:center;}
 .estiloBuscar:hover{cursor: pointer;background: #CCC;}
-.estilosResultados{float:left;width:100px;height:20px;padding:5px;background:#F0F0F0;border:1px solid #CCC;font-size:11px;text-align:left;color: #333;}
+.estilosResultados{float:left;width:150px;height:20px;padding:5px;background:#F0F0F0;border:1px solid #CCC;font-size:11px;text-align:left;color: #333;}
 .estilosResultados:hover{background: #CCC;cursor: pointer;}
+.estilosTitulos{float: left;margin-top: 4px;}
+.estiloNroDatos{float: right;border: 0px solid #000;margin: 4px 4px;color: #333;}
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -54,7 +56,7 @@ td{ /**/ border-right:#ccc 1px solid; border-bottom:#ccc 1px solid;text-align:ce
 		var altoCuerpo=altoDiv-52;
 		$("#detalleEmpaque").css("height",altoCuerpo+"px");
 		$("#ventanaEnsambleContenido2").css("height",altoCuerpo+"px");
-		$("#detalleEmpaque").css("width",(anchoDiv-178)+"px");
+		$("#detalleEmpaque").css("width",(anchoDiv-190)+"px");
 		$("#ventanaEnsambleContenido2").css("width",(anchoDiv-200)+"px");
 		$("#infoEnsamble3").css("height",altoCuerpo+"px");
 	}
@@ -205,9 +207,9 @@ function mostrarTab(opcion){
 <div id="contenedorEnsamble">
 	<div id="contenedorEnsamble3">
 		<div id="barraOpcionesEnsamble">                    
-                    <div id="" style="float:left;width:230px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:16px;text-align:left;">Multi-Consulta de Equipos</div>
+                    <!--<div id="" style="float:left;width:230px;height:20px;padding:5px;font-size:16px;text-align:left;">Multi-Consulta de Equipos</div>-->
                     <div class="estiloBuscar" onclick="buscar_valores_x()">Buscar</div>
-                    <div id="cargadorEmpaque" style="float:right;width:200px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:13px;text-align:right;"></div>
+                    <div id="cargadorEmpaque" style="float:right;width:200px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:15px;text-align:right;">Multi-Consulta de Equipos</div>
 		</div>
 		<div id="infoEnsamble3">			
 		    <div id="listadoEmpaque" style="border:1px solid #e1e1e1;background:#fff; height:99%;width:97%;font-size:12px;margin:3px;overflow: auto;">
@@ -217,9 +219,18 @@ function mostrarTab(opcion){
                     </div>
 		</div>
 		<div id="detalleEmpaque" class="ventanaEnsambleContenido" style="overflow: hidden;">
-                    <div id="" class="estilosResultados" onclick="mostrarTab('eqProceso')">Eq. Proceso</div>
-                    <div id="" class="estilosResultados" onclick="mostrarTab('eqEnviado')">Eq. Enviado</div>
-                    <div id="" class="estilosResultados" onclick="mostrarTab('eqNoEncontrado')">No Encontrados</div>
+                    <div id="" class="estilosResultados" onclick="mostrarTab('eqProceso')">
+			<div class="estilosTitulos">Eq. Proceso</div>
+			<div id="totalEquiposProceso" class="estiloNroDatos">#</div>
+		    </div>
+                    <div id="" class="estilosResultados" onclick="mostrarTab('eqEnviado')">
+			<div class="estilosTitulos">Eq. Enviado</div>
+			<div id="totalEquiposEnviados" class="estiloNroDatos">#</div>
+		    </div>
+                    <div id="" class="estilosResultados" onclick="mostrarTab('eqNoEncontrado')">
+			<div class="estilosTitulos">No Encontrados</div>
+			<div id="totalEquiposNoEncontrados" class="estiloNroDatos">#</div>
+		    </div>
                     <div id="eqProceso" style="border: 1px solid #CCC;width: 99.3%;height: 94.5%;margin: 33px 3px 3px 3px;overflow: auto;"></div>
                     <div id="eqEnviado" style="display: none;border: 1px solid #CCC;width: 99.3%;height: 94.5%;margin: 33px 3px 3px 3px;overflow: auto;"></div>
                     <div id="eqNoEncontrado" style="display: none;border: 1px solid #CCC;width: 99.3%;height: 94.5%;margin: 33px 3px 3px 3px;overflow: auto;"></div>

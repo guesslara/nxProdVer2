@@ -107,6 +107,15 @@
 .estiloPantallaCompleta:hover{border: 1px solid #CCC;cursor: pointer;}
 .estiloDivIzqPCompleta{float: left;}
 .estiloDivDerPCompleta{margin-top: 5px;margin-left: 4px;font-weight: bold;float: left;}
+.estiloImgBuscador{float: right;border: 00px solid #FF0000;margin: 2px 3px;width: 20px;height: 18px;}
+/*Buscador UI*/
+#buscadorEquiposUI{display: none;position: absolute;right: 3px;margin-top: -3px;width: 640px;height: 85%;border: 1px solid blue;z-index: 1000;background: #B0D0FF;}
+#estiloDivBusqueda{border-bottom: 1px solid blue;border-top: 1px solid blue;margin-top: -1px;width: 628px;padding: 6px;z-index: 1000;background: #B0D0FF;}
+.estiloTituloBuscar{color: #333;font-weight: bold;}
+#txtBusquedaImeiPrincipal{width: 200px;font-size: 16px;font-weight: bold;}
+#estiloBtnCerrarDiv{float: right;border: 0px solid #FF0000;width: 19px;height: 19px;}
+#divResultadosBusquedaPrincipal{position: absolute;overflow-x: auto;border: 1px solid #F0F0F0;margin: 1px;background: #FFF;width: 99.3%;height: 91%;}
+/*Fin Buscador UI*/
 </style>
 <body>
     <div id="cargaPerfil"></div>
@@ -119,12 +128,25 @@
         </div>
         <div id="menu" class="barraMenu" style="z-index: 50;height: 25px;">
 <?          $objPermisos->construyeMenuNuevo($_SESSION[$txtApp['session']['idUsuario']]);?>
-	    <span style="float: right;">
-		Buscar:<input type="text" name="" id="">
-		
-	    </span>
+	    <div class="estiloImgBuscador">
+		<a href="#" onclick="mostrarBuscadorEquipos()" title="Mostrar Buscador"><img src="../img/search-icon.png" border="0"></a>
+	    </div>
         </div>
-        <div id="contenedorVentanaMDI">
+	
+	<!--Adpatacion de la capa del buscador-->	
+	<div id="buscadorEquiposUI">
+	    <div class="estiloDivBusqueda">
+		<span class="estiloTituloBuscar">Buscar:</span>
+		<input type="text" name="txtBusquedaImeiPrincipal" id="txtBusquedaImeiPrincipal" onkeypress="verificaTeclaImeiBusquedaPrincipal(event)">
+		<input type="radio" id="filtroImei" name="filtroBusqueda" value="imei" checked="checked" ><label for="filtroImei">Imei</label>
+		<input type="radio" id="filtroSerie" name="filtroBusqueda" value="serial"><label for="filtroSerie">Serial</label>
+		<div id="estiloBtnCerrarDiv"><a href="#" onclick="cerrarBusquedaPrincipal()"><img src="../img/close.gif"></a></div>
+	    </div>	    
+	    <div id="divResultadosBusquedaPrincipal"></div>
+	</div>	
+	<!--fin adaptacion del buscador-->
+        
+	<div id="contenedorVentanaMDI">
             <iframe id="contenedorVentana" name="contenedorVentana" class="contenedorVentanaMDIApp"></iframe>
         </div>
         <div id="barraestado2">

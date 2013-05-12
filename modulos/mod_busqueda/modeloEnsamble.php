@@ -53,7 +53,7 @@
 			$sqlBuscar1="select * from equipos_enviados where ".$filtro."='".$imei."'";
 			$resBuscar1=mysql_query($sqlBuscar1,$this->conectarBd());
 			if(mysql_num_rows($resBuscar)==0 && mysql_num_rows($resBuscar1)==0){
-				echo "<br><strong><h3 style='color:red'>Error: imei ($imei) no encontrado en la Base de Datos.</h3></strong>.";
+				echo "<div style='margin-top:20px;border-top:1px solid #FF0000;border-bottom:1px solid #FF0000;background:#F5A9A9;height:20px;padding:9px;'>Error: imei ($imei) no encontrado en la Base de Datos.</div>";
 			}else{
 				if($filtro=="imei"){
 					$regsNoEnviar=$objFunciones->buscarNoEnviar($imei); $campo="imei";
