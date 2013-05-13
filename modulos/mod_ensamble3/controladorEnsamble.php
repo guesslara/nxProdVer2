@@ -34,5 +34,12 @@
 			$fechaFin=$_POST['fechaFin'];
 			$objEnsamble->showRes($fechaIni,$fechaFin);
 		break;
+		case  "queryMod":
+			$fechaIni=$_POST['fechaIni'];
+			$fechaFin=$_POST['fechaFin'];
+			$line=$_POST['line'];
+			$op=$_POST['op'];
+			$objEnsamble->queryMod($fechaIni,$fechaFin,$line,$op);
+		break;
 	}
 ?>

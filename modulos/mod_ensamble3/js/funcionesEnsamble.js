@@ -9,10 +9,9 @@ function ajaxApp(divDestino,url,parametros,metodo){
 	url:url,
 	data:parametros,
 	beforeSend:function(){ 
-		$("#cargando").show(); 
+		$("#"+divDestino).show().html("Cargando..."); 
 	},
-	success:function(datos){ 
-		$("#cargando").hide();
+	success:function(datos){ 		
 		$("#"+divDestino).show().html(datos);		
 	},
 	timeout:90000000,
@@ -124,34 +123,7 @@ function nuevacaptura(){
 	$("#div_grid_ensamble").html("");	
 	resetForm();
 }
-/*
-var cboMoverReqs=document.getElementById("cboMoverReqs").value;
-	var reqsGrid="";
 
-	for (var i=0;i<document.frmReqsGrid.elements.length;i++){
-		if (document.frmReqsGrid.elements[i].type=="checkbox"){
-			if (document.frmReqsGrid.elements[i].checked){
-				//alert("Variable claves=["+claves+"]");
-				if (reqsGrid=="")
-					reqsGrid=reqsGrid+document.frmReqsGrid.elements[i].value;
-				else
-					reqsGrid=reqsGrid+","+document.frmReqsGrid.elements[i].value;
-			}	
-		}
-	}
-	//alert(cboMoverReqs);
-	//alert(reqsGrid);
-	if((reqsGrid=="") || (cboMoverReqs=="")){
-		alert('Seleccione por lo menos 1 Requisicion para efectuar la Operacion');
-	}else{		
-		div="detalleReqs";
-		url="controlador.php";
-		parametros="action=moverReqs&reqsGrid="+reqsGrid+"&directorio="+cboMoverReqs;
-		//alert(parametros);
-		metodo="GET";
-		ajaxApp(div,url,parametros,metodo);
-	}
-*/
 function mostrarTab(div){
 	if(div=="ventanaEnsambleContenido"){
 		$("#ventanaEnsambleContenido").show();	$("#ventanaEnsambleContenido2").hide(); $("#ventanaEnsambleContenido2").html("");
@@ -243,7 +215,8 @@ function consultaAntEqui(){
 	ajaxApp("consultaEqui","controladorEnsamble.php","action=contAntEqui","POST");
 }
 function muestrAnt(){
-	$("#ventanaEnsambleContenido").append("<div id='ConQueryA' style='width:98%; height: 98%; margin: 3px; display: none; font-size: 15px;'><div id='QueryRes' style='width: 39%; height: 98%; border: 1px solid #f0f0f0; overflow: auto; margin: 3px;float: left;'></div><div id='GrafRes' style='width: 58%; height: 98%; border: 1px solid #f0f0f0; overflow: auto; margin-top: 3px; margin-bottom: 3px;margin-right: 3px;float: right;'></div></div>");
+	$("#ventanaEnsambleContenido").html("");
+	$("#ventanaEnsambleContenido").append("<div id='ConQueryA' style='width:98%; height: 98%; margin: 3px; display: none; font-size: 15px;'><div id='QueryRes' style='width: 39%; height: 98%; border: 1px solid #f0f0f0; overflow:auto; margin: 3px;float: left;'></div><div id='GrafRes' style='width: 58%; height: 98%; border: 1px solid #f0f0f0; overflow: auto; margin-top: 3px; margin-bottom: 3px;margin-right: 3px;float: right;'></div></div>");
 	
 	
 	var fechaIni=$("#fechaIni").val();
@@ -253,17 +226,27 @@ function muestrAnt(){
 		return;
 	}
 	$("#ConQueryA").show();
-	$("#GrafRes").append("<iframe src='grafProc.php?fechaIni="+fechaIni+"&fechaFin="+fechaFin+"' method='GET' style=\"width:95%;height:270px;margin:5px;\"></iframe><iframe src='grafSend.php?fechaIni="+fechaIni+"&fechaFin="+fechaFin+"' method='GET' style=\"width:95%;height:270px;margin:5px;\"></iframe>")
+	$("#GrafRes").append("<iframe src='grafProc.php?fechaIni="+fechaIni+"&fechaFin="+fechaFin+"' method='GET' scrolling='no' style=\"width:95%;height:270px;margin:5px;\"></iframe><iframe src='grafSend.php?fechaIni="+fechaIni+"&fechaFin="+fechaFin+"' method='GET' style=\"width:95%;height:270px;margin:5px;\" scrolling='no'></iframe>")
 	ajaxApp("QueryRes","controladorEnsamble.php","action=showRes&fechaIni="+fechaIni+"&fechaFin="+fechaFin,"POST");
 }
-function muestraMod(Li){
-	$("#modL"+Li).show();
-	$("#close"+Li).append("<label><a href='#' onclick='closeMod("+Li+");' style='color:red;text-decoration: none;' title='Ocultar'><img src='../../img/icon_delete.gif' border='0' /></a></label>")
+function muestraMod(Li,OPC){
+	$("#"+OPC+"modL"+Li).show();
+	$("#"+OPC+"modL"+Li).html("");
+	$("#"+OPC+"close"+Li).append("<label><a href='#' onclick=\"closeMod('"+Li+"','"+OPC+"')\" style='color:red;text-decoration: none;' title='Ocultar'><img src='../../img/icon_delete.gif' border='0' /></a></label>")
 }
-function closeMod(Li){
-	$("#modL"+Li).hide();
-	$("#close"+Li).html("");
+function closeMod(Li,OPC){
+	$("#"+OPC+"modL"+Li).hide();
+	$("#"+OPC+"close"+Li).html("");
 }
-function queryMod(Li,fechaIni,fechaFin){
-	ajaxApp("modL"+Li,"controladorEnsamble.php","action=queryMod&")
+function queryMod(Li,fechaIni,fechaFin,op){
+	var o="";
+	if(op=="1"){
+		o="P";
+	}else{
+		o="E";
+	}
+	ajaxApp(o+"modL"+Li,"controladorEnsamble.php","action=queryMod&fechaIni="+fechaIni+"&fechaFin="+fechaFin+"&line="+Li+"&op="+op,"POST");
+}
+function cerrarVentana(div){
+	$("#"+div).hide();
 }

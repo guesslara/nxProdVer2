@@ -58,6 +58,10 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 #infoEnsamble3{width:215px;border:1px solid #CCC;background:#f0f0f0;float:right;overflow: auto;}
 #msgFlexCaptura{border:1px solid #000;background-color:#FFF;height:150px;width:300px;position:absolute;left:50%;top:50%;margin-left:-150px;margin-top:-75px;z-index:4;}
 #advertencia{height:20px;padding:5px;background:#000;color:#FFF; text-align:left;font-size:12px;}
+#ML{width: 97%; height:15px;font-size: 10px; text-align: center;margin: 3px;overflow: auto;}
+#ML:hover{cursor:pointer;border: 1px solid #000;}
+#transparenciaGeneral{background:url(../../../img/desv.png) repeat;position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index:20;}
+.transparenciaGeneral{background:url(../../../img/desv.png) repeat;position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index:20;}
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -98,7 +102,12 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 			</div>
 		</div>
 		<div id="ventanaEnsambleContenido" class="ventanaEnsambleContenido">
-			
+			<div id="transparenciaGeneral1" class="transparenciaGeneral" style="display:none;">
+				<div id="divMensajeCaptura" class="ventanaDialogo">
+					<div id="barraTitulo1VentanaDialogoValidacion" class="barraTitulo1VentanaDialogoValidacion">Informaci&oacute;n<div id="btnCerrarVentanaDialogo"><a href="#" onclick="cerrarVentana('divMensajeCaptura')" title="Cerrar Ventana"><img src="../../img/close.gif" border="0" /></a></div></div>
+					<div id="listadoEmpaqueValidacion" style="border:1px solid #CCC; margin:4px; font-size:10px;height:89%; overflow:auto;"></div>
+				</div>
+			</div>
 		</div>
 		<div id="ventanaEnsambleContenido2" class="ventanaEnsambleContenido" style="display:none;"></div>
 		<div id="infoEnsamble3"><br>

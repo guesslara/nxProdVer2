@@ -358,7 +358,7 @@
 					<tr>
 						<th>De:</th>
 						<td>
-							<input type="text" name="fechaIni" id="fechaIni" style="width: 80px;"/><input type="button" id="lanzador1" value="..." />
+							<input type="text" name="fechaIni" id="fechaIni" style="width: 80px;" readonly/><input type="button" id="lanzador1" value="..." />
 							<!-- script que define y configura el calendario-->
 							<script type="text/javascript">
 							Calendar.setup({
@@ -372,7 +372,7 @@
 					<tr>
 						<th >A:</th>
 						<td>
-							<input type="text" name="fechaFin" id="fechaFin" style="width: 80px;"/><input type="button" id="lanzador2" value="..." />
+							<input type="text" name="fechaFin" id="fechaFin" style="width: 80px;" readonly/><input type="button" id="lanzador2" value="..." />
 							<!-- script que define y configura el calendario-->
 							<script type="text/javascript">
 							Calendar.setup({
@@ -396,6 +396,9 @@
 			$sqlLineaSend="SELECT count( DISTINCT detalle_ing.id_radio ) AS total,equipos_enviados.lineaEnsamble AS linea FROM detalle_ing INNER JOIN equipos_enviados ON detalle_ing.id_radio = equipos_enviados.id_radio WHERE (f_registro between '".$fechaIni."' AND '".$fechaFin."')AND(id_proc =4) AND equipos_enviados.status IN ('WIP','Validando','ENVIADO') GROUP BY equipos_enviados.lineaEnsamble";
 			$exeLineaSend=mysql_query($sqlLineaSend,$this->conectarBd());
 			$suma=0;$suma2=0;
+			if(mysql_num_rows($resLineas)==0){
+				echo"No hay registros que mostrar";
+			}else{
 			?>
 				<div id="headTa" style="width: 97%; height: 20px;font-size: 12px; text-align: center; background: #EEE;font-weight: bold; margin: 3px;clear: both;">Capturados del <?=$fechaIni?> al <?=$fechaFin;?></div>
 				<div id="headQ" style="width: 97%; height: auto;font-size: 12px; text-align: center; background: #fff;margin: 3px;clear: both;overflow: auto;">
@@ -407,13 +410,13 @@
 							<tr>
 								<th>Linea <?=$rowLinea["linea"];?></th>
 								<td><?=$rowLinea["total"];?></td>
-								<td><a href="#" onclick="muestraMod('<?=$rowLinea['linea']?>');queryMod('<?=$rowLinea['linea']?>','<?=$fechaIni?>',<?$fechaFin?>);" style="color:blue;text-decoration: none;" title="Ver por Modelos"><img src="../../img/add.png" border="0" /></a></td>
-								<td><div id="close<?=$rowLinea['linea']?>"></div></td>
+								<td><a href="#" onclick="muestraMod('<?=$rowLinea['linea']?>','P');queryMod('<?=$rowLinea['linea']?>','<?=$fechaIni?>','<?=$fechaFin?>','1');" style="color:blue;text-decoration: none;" title="Ver por Modelos"><img src="../../img/add.png" border="0" /></a></td>
+								<td><div id="Pclose<?=$rowLinea['linea']?>"></div></td>
 							</tr>
 							<tr>
 								<td colspan=4>
-									<div id="modL<?=$rowLinea['linea']?>" style="display: none;">
-										hola
+									<div id="PmodL<?=$rowLinea['linea']?>" style="display: none;overflow: auto;height:auto;width: 220px;">
+				
 									</div>
 								</td>
 								
@@ -426,7 +429,10 @@
 					
 				</div>
 				<div id="headTotal" style="width: 97%; height: 20px;font-size: 12px; text-align: center; background: #EEE;font-weight: bold; margin: 3px;clear: both;">Total periodo:<?=$suma?></div>
-			<?
+			<?}
+			if(mysql_num_rows($exeLineaSend)==0){
+				echo"No hay registros que mostrar";
+			}else{
 			?>
 				<div id="headSend" style="width: 97%; height: auto;font-size: 12px; text-align: center; background: #fff;margin: 3px;clear: both;overflow: auto;">
 					<p style="text-align: center; font-weight: bold;">Equipos Enviados</p>
@@ -437,8 +443,17 @@
 							<tr>
 								<th>Linea <?=$rowSend["linea"];?></th>
 								<td><?=$rowSend["total"];?></td>
-								<td><a href="#" onclick="" style="color:blue;text-decoration: none;" title="Ver por Modelos"><img src="../../img/add.png" border="0" /></a></td>
+								<td><a href="#" onclick="muestraMod('<?=$rowSend['linea']?>','E');queryMod('<?=$rowSend['linea']?>','<?=$fechaIni?>','<?=$fechaFin?>','2');" style="color:blue;text-decoration: none;" title="Ver por Modelos"><img src="../../img/add.png" border="0" /></a></td>
+								<td><div id="Eclose<?=$rowSend['linea']?>"></div></td>
 							</tr>
+							<tr>
+								<td colspan=4>
+									<div id="EmodL<?=$rowSend['linea']?>" style="display: none;overflow: auto;height:auto;width: 220px;">
+									</div>
+								</td>
+								
+							</tr>	
+							
 						
 						<?
 						$suma2=$suma2+$rowSend["total"];
@@ -448,9 +463,40 @@
 				</div>
 				<div id="headTotal" style="width: 97%; height: 20px;font-size: 12px; text-align: center; background: #EEE;font-weight: bold; margin: 3px;clear: both;">Total periodo:<?=$suma2?></div>
 			<?
+			}
 		}
-		public function queryMod($line){
-			$sqlMod="SELECT COUNT(DISTINCT detalle_ing.id_radio) AS totalM,modelo,lineaEnsamble AS Linea FROM equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo inner join detalle_ing on equipos.id_radio=detalle_ing.id_radio WHERE (f_registro between '".$fechaIni."' AND '".$fechaFin."')AND(id_proc =4) AND equipos.status IN ('WIP','Validando','ENVIADO') AND lineaEnsamble=";
+		public function queryMod($fechaIni,$fechaFin,$line,$op){
+			if($op=="1"){
+				$sqlMod="SELECT count( DISTINCT detalle_ing.id_radio ) AS total,modelo,cat_modradio.id_modelo FROM detalle_ing INNER JOIN equipos ON detalle_ing.id_radio = equipos.id_radio  INNER JOIN cat_modradio ON equipos.id_modelo= cat_modradio.id_modelo WHERE (f_registro between '".$fechaIni."' AND '".$fechaFin."') AND (id_proc =4) AND equipos.status IN ('WIP','Validando','ENVIADO') AND equipos.lineaEnsamble='".$line."' GROUP BY cat_modradio.id_modelo";			
+			}
+			else{
+				$sqlMod="SELECT count( DISTINCT detalle_ing.id_radio ) AS total,modelo,cat_modradio.id_modelo FROM detalle_ing INNER JOIN equipos_enviados ON detalle_ing.id_radio = equipos_enviados.id_radio  INNER JOIN cat_modradio ON equipos_enviados.id_modelo= cat_modradio.id_modelo WHERE (f_registro between '".$fechaIni."' AND '".$fechaFin."') AND (id_proc =4) AND equipos_enviados.status IN ('WIP','Validando','ENVIADO') AND equipos_enviados.lineaEnsamble='".$line."' GROUP BY cat_modradio.id_modelo";
+			}		
+			$exeSqlMod=mysql_query($sqlMod,$this->conectarBd());
+			$bkg="#f0f0f0";
+			if(mysql_num_rows($exeSqlMod)==0){
+				echo"No hay registros que mostrar";
+			}else{
+				?>
+				<div id="HML" style="background:<?=$bkg?>;width: 97%; height:15px;font-size: 10px; text-align: center;margin: 3px;overflow: auto;clear: both;">
+						<div id="ta" style="width:42%;height:15px;font-weight: bold;font-size: 10px;float: left;">Total</div>
+						<div id="mo" style="width:54%;height:15px;font-weight: bold;font-size: 10px;float: right;">Modelo</div>
+				</div>
+				<?
+				while($rowMod=mysql_fetch_array($exeSqlMod)){
+					if($bkg=="#f0f0f0"){
+						$bkg="#fff";
+					}else{
+						$bkg="#f0f0f0";
+					}
+					?>
+					<div id="ML" style="background:<?=$bkg?>;" onclick="showDM('<?=$fechaIni?>','<?=$fechaFin?>','<?=$line?>','<?=$rowMod['id_modelo']?>','<?=$op?>')" title="De clic para ver el detalle de los equipos del modelo <?=$rowMod['modelo']?>">
+						<div id="t" style="width:42%;height:15px;font-size: 10px;float: left;"><?=$rowMod['total']?></div>
+						<div id="m" style="width:54%;height:15px;font-size: 10px;float: right;"><?=$rowMod['modelo']?></div>
+					</div>
+					<?
+				}
+			}
 		}
 	}//fin de la clase
 ?>
