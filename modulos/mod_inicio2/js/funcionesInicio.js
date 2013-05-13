@@ -46,6 +46,7 @@ function verResumen(status,modelo,tipoStatus){
 	ajaxApp("resumenStatus","controlador.php","action=mostrarResumen&status="+status+"&modelo="+modelo+"&tipoStatus="+tipoStatus,"POST");
 }
 function verResumenstatus(status,div){
+	//alert(status);
 	ajaxApp(div,"controlador.php","action=mostrarResumenStatus&status="+status+"&div="+div,"POST");
 }
 function verResumenStatusProceso(status,div){

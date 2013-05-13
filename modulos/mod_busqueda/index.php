@@ -70,7 +70,7 @@ document.onkeypress=function(elEvento){
                     <div id="" style="float:left;width:305px;height:20px;padding:5px;text-align:left;margin-top: -5px;border: 0px solid #FF0000;">
 			<input type="text" name="txtImeiEnsamble" id="txtImeiEnsamble" onkeypress="verificaTeclaImeiEnsamble(event)" size="35" style="font-size:28px; width:300px; height:25px;" />			
 		    </div>
-		    <div style="float: left;border: 0px solid #FF0000;margin-top: 2px;width: 65px;">
+		    <div style="float: left;border: 0px solid #FF0000;margin-top: 2px;width: 80px;">
 			<select name="cboFiltroBusqueda" id="cboFiltroBusqueda" style="font-size:16px;height: 25px;">
 				<option value="imei" selected="selected">Imei</option>
 				<option value="serial">Serial</option>

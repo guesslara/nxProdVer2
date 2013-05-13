@@ -11,10 +11,7 @@ body{margin:0; height:100%;overflow:auto;}
 <script type="text/javascript" src="js/funcionesInicio.js"></script>
 <script type="text/javascript" src="../../clases/jquery-1.3.2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../../css/main.css" />
-<!--grafica-->
-<!--<link href="../../recursos/graficas/css/basic.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="../../recursos/graficas/js/enhance.js"></script>-->
-<!--fin grafica-->
+
 <style type="text/css">
 html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:0px; overflow:hidden; font-family:Verdana, Geneva, sans-serif;}
 #contenedorEnsamble{height:99%; position:relative;margin:0 auto 0 auto; width:99.5%; overflow:auto; background:#CCC;border:1px solid #000;}
@@ -45,23 +42,9 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 <script>
 	$(document).ready(function (){
 		redimensionar();
-		resumen('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>');
-		//altoDoc=$(document).height();
-		//document.getElementById("resumen").style.height=(altoDoc-71)+"px";
-		//document.getElementById("resumenStatus").style.height=(altoDoc-10)+"px";		
+		resumen('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>');		
 	});
-	// Run capabilities test
-	/*enhance({
-		loadScripts: [
-			{src: '../../recursos/graficas/js/excanvas.js', iecondition: 'all'},
-			'../../recursos/graficas/js/jquery.js',
-			'../../recursos/graficas/js/visualize.jQuery.js'				
-		],
-		loadStyles: [
-			'../../recursos/graficas/css/visualize.css',
-			'../../recursos/graficas/css/visualize-dark.css'
-		]	
-	});*/
+	
 	function redimensionar(){
 		var altoDiv=$("#contenedorEnsamble3").height();
 		var anchoDiv=$("#contenedorEnsamble3").width();		
@@ -108,29 +91,6 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 		</div>-->
 	</div>
 </div>
-
-    <!--<table id="tablaInicio" width="99%" border="0" cellpadding="1" cellspacing="1" style="border:1px solid #000;">
-      <tr>
-        <td width="30%" valign="top">
-          <div style="border:1px solid #000;width:99%; margin-left:3px; margin-top:10px; margin-bottom:10px;">
-            <div style="border:1px solid #333; background:#000; font-size:12px; color:#fff; height:20px; font-weight:bold;">Resumen</div>
-            <div style="height:17px; padding:5px; background:#f0f0f0; border:1px solid #CCC; color:#000;">
-		<a href="#" style="text-decoration:none;color:blue;" onclick="resumen('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>');" title="Ver Lotes">Resumen Sistema</a> |
-		<a href="#" style="text-decoration:none;color:blue;" onclick="resumenStatus('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>');" title="Ver Lotes">Resumen Proceso</a> |
-		<a href="#" style="text-decoration:none;color:blue;" onclick="mostrarLotes()" title="Ver Folios">Folios</a> |
-		<a href="#" style="text-decoration:none;color:blue;" onclick="enviadoFolio()" title="Enviados por Folio">Enviados por Folio</a>
-	    </div>-->
-            <!--<div id="resumen" style="width:99%; background:#FFF;overflow:auto; height:20%; border:1px solid #F00;position:absolute;margin:0 auto 0 auto;"></div>-->
-          <!---</div>
-        </td>
-        <td width="70%" valign="top" style=" height:50%;">
-        <!--<div style="border:1px solid #000; width:99%; margin-left:3px; margin-top:10px; margin-bottom:10px;">
-            <div style="border:1px solid #333; background:#000; font-size:12px; color:#fff; height:20px; font-weight:bold;">Mes Actual</div>
-            <div id="calendarizacionMes" style="width:99%; height:50%;overflow:auto;"></div>
-          </div>-->
-	  <!--<div id="resumenStatus" style="height:97%; border:1px solid #CCC; overflow:auto;">&nbsp;</div>       </td>            
-      </tr>
-    </table>-->
- <?
+<?
  include ("../../includes/pie.php");
- ?>
+?>

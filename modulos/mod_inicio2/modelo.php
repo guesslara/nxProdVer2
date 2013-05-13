@@ -546,7 +546,12 @@
 	}
 	
       public function filtrarModeloStatus($status,$div){
-	    if($status=="SCRAP" || $status=="WIP" || $status=="RETENCION"){
+	    //se filtran los status disponibles
+	    $sqlStatusWip="SELECT status FROM equipos GROUP BY status";
+	    $resStatusWip=mysql_query($sqlStatusWip,$this->conexionBd());
+	    $rowStatusWip=mysql_fetch_array($resStatusWip);
+	    //if($status=="SCRAP" || $status=="WIP" || $status=="RETENCION" || $status=="RETENCION2" || $status=="SCRAP POR ENVIAR"){
+	    if(in_array($status,$rowStatusWip)){  
 		$sqlModelo="SELECT COUNT( * ) AS `Filas` , modelo,equipos.id_modelo as idModeloRadio
 			FROM equipos INNER JOIN cat_modradio ON equipos.id_modelo = cat_modradio.id_modelo
 			WHERE STATUS = '".$status."'
@@ -559,6 +564,7 @@
 			GROUP BY equipos_enviados.id_modelo
 			ORDER BY `Filas` ASC";
 	    }
+	    echo "<br>".$sqlModelo;
 	    $resModelo=mysql_query($sqlModelo,$this->conexionBd());
 	    if(mysql_num_rows($resModelo)==0){
 		  echo "<br>Sin Registros.";
@@ -586,15 +592,13 @@
       
       public function resumen($mes,$anio,$diaActual){// SFR_002320
 	    include("../../includes/conectarbase.php");
-	    $totalDias=$this->UltimoDia($anio,$mes);
-	    //$totalDias=UltimoDia($anio,$mes);
+	    $totalDias=$this->UltimoDia($anio,$mes);	    
 	    $fecha1=$anio."-".$mes."-01";
 	    $fecha2=$anio."-".$mes."-".$totalDias;
 	    $sqlTotalEquipos="SELECT COUNT( * ) AS `Filas` , `status` FROM `equipos` GROUP BY `status` ORDER BY `status` ";
 	    $sqlTotalEquipos1="SELECT COUNT( * ) AS `Filas` , `status` FROM `equipos_enviados` GROUP BY `status` ORDER BY `status` ";
 	    $resTotalEquipos=mysql_query($sqlTotalEquipos,$this->conexionBd());
-	    $resTotalEquipos1=mysql_query($sqlTotalEquipos1,$this->conexionBd());
-	      
+	    $resTotalEquipos1=mysql_query($sqlTotalEquipos1,$this->conexionBd());	      
 	    $i=0;
 	    $cuentaTotalResumen=0; $nombresStatus="";
 	    while($rowTotalEquipos=mysql_fetch_array($resTotalEquipos)){
