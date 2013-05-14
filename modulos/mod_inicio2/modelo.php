@@ -551,7 +551,7 @@
 	    $resStatusWip=mysql_query($sqlStatusWip,$this->conexionBd());
 	    $rowStatusWip=mysql_fetch_array($resStatusWip);
 	    //if($status=="SCRAP" || $status=="WIP" || $status=="RETENCION" || $status=="RETENCION2" || $status=="SCRAP POR ENVIAR"){
-	    if(in_array($status,$rowStatusWip)){  
+	    if(!in_array($status,$rowStatusWip)){  
 		$sqlModelo="SELECT COUNT( * ) AS `Filas` , modelo,equipos.id_modelo as idModeloRadio
 			FROM equipos INNER JOIN cat_modradio ON equipos.id_modelo = cat_modradio.id_modelo
 			WHERE STATUS = '".$status."'
@@ -564,7 +564,7 @@
 			GROUP BY equipos_enviados.id_modelo
 			ORDER BY `Filas` ASC";
 	    }
-	    echo "<br>".$sqlModelo;
+	    //echo "<br>".$sqlModelo;
 	    $resModelo=mysql_query($sqlModelo,$this->conexionBd());
 	    if(mysql_num_rows($resModelo)==0){
 		  echo "<br>Sin Registros.";
