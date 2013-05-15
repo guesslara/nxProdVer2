@@ -1,3 +1,3 @@
 <?
-	$version="versi&oacute;n 1.0.0";
+	$version="versi&oacute;n 2.0.0";
 ?>

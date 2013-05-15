@@ -30,5 +30,9 @@
 			$objAbout=new aboutCompras();
 			$objAbout->about();
 		break;
+		case "notasVersion":
+			$objAbout=new aboutCompras();
+			$objAbout->notasVersion();
+		break;
 	}
 ?>

@@ -14,7 +14,7 @@ body{margin:0; height:100%;overflow:auto;}
 
 <style type="text/css">
 html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:0px; overflow:hidden; font-family:Verdana, Geneva, sans-serif;}
-#contenedorEnsamble{height:99%; position:relative;margin:0 auto 0 auto; width:99.5%; overflow:auto; background:#CCC;border:1px solid #000;}
+#contenedorEnsamble{height:99%; position:relative;margin:0 auto 0 auto; width:99.5%; overflow:hidden; background:#CCC;border:1px solid #000;}
 #contenedorEnsamble3{width:99%;height:99%;background:#FFF;border:1px solid #000;margin:3px auto 0 auto;}
 #barraOpcionesEnsamble{height:33px;padding:5px;background:#f0f0f0;border:1px solid #CCC;}
 .opcionesEnsamble{border:1px solid #000;background:#FFF;height:20px;padding:5px;width:120px;text-align:center;float:left;margin-left:3px;font-size: 12px;}
@@ -53,7 +53,7 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 		$("#resumen").css("height",altoCuerpo+"px");
 		$("#ventanaEnsambleContenido").css("height",altoCuerpo+"px");
 		//$("#detalleEmpaque").css("width",(anchoDiv-220)+"px");		
-		$("#resumen").css("width",(anchoCuerpo)+"px");
+		$("#resumen").css("width",(anchoCuerpo-5)+"px");
 		$("#infoEnsamble3").css("height",altoCuerpo+"px");
 		$("#ventanaEnsambleContenido2").css("height",altoCuerpo+"px");
 		$("#ventanaEnsambleContenido2").css("width",(anchoCuerpo)+"px");
@@ -65,8 +65,8 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 	<div id="contenedorEnsamble3">
 		<div id="barraOpcionesEnsamble">						
 			<div class="opcionesEnsamble" onclick="resumen('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>')" title="Resumen del Sistema">Resumen</div>
-			<div class="opcionesEnsamble" onclick="resumenStatus('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>')" title="Resumen por Proceso">Resumen Proceso</div>
-			<div class="opcionesEnsamble" onclick="enviarAValidar()" title="Capturar SCRAP">Enviado por Folio</div>
+			<!--<div class="opcionesEnsamble" onclick="resumenStatus('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>')" title="Resumen por Proceso">Resumen Proceso</div>
+			<div class="opcionesEnsamble" onclick="enviarAValidar()" title="Capturar SCRAP">Enviado por Folio</div>-->
 			<div style="float:right;width:200px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:14px;text-align:left;">Inicio</div>
 		</div>
 		<div id="infoEnsamble3">			

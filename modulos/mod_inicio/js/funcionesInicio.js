@@ -11,7 +11,7 @@ function ajaxApp(divDestino,url,parametros,metodo){
 		$("#"+divDestino).show().html("<p>Cargando...</p>"); 
 	},
 	success:function(datos){	
-		//$("#cargadorApp").hide();
+		$("#cargadorApp").hide();
 		$("#"+divDestino).show().html(datos);
 	},
 	timeout:90000000,
@@ -26,16 +26,13 @@ function calendarizacionMes(mes,anio,diaActual){
 	ajaxApp(div,url,parametros,metodo);
 }
 function resumen(mes,anio,diaActual){
-	div="listadoEmpaque";
+	div="resumen";
 	url="controlador.php";
 	parametros="action=resumen&mes="+mes+"&anio="+anio+"&diaActual="+diaActual;
 	metodo="GET";
 	ajaxApp(div,url,parametros,metodo);
-	$("#resumen").hide();
-	$("#ventanaEnsambleContenido2").show();
 }
 function resumenStatus(mes,anio,diaActual){
-	$("#btnOpcionesInicioSub").html("");
 	div="resumen";
 	url="controlador.php";
 	parametros="action=resumenStatus&mes="+mes+"&anio="+anio+"&diaActual="+diaActual;
@@ -43,18 +40,16 @@ function resumenStatus(mes,anio,diaActual){
 	ajaxApp(div,url,parametros,metodo);
 }
 function verResumen(status,modelo,tipoStatus){
-	//alert("verResumen");
-	ajaxApp("resumen","controlador.php","action=mostrarResumen&status="+status+"&modelo="+modelo+"&tipoStatus="+tipoStatus,"POST");
+	ajaxApp("resumenStatus","controlador.php","action=mostrarResumen&status="+status+"&modelo="+modelo+"&tipoStatus="+tipoStatus,"POST");
 }
 function verResumenstatus(status,div){
-	//alert(status);
 	ajaxApp(div,"controlador.php","action=mostrarResumenStatus&status="+status+"&div="+div,"POST");
 }
 function verResumenStatusProceso(status,div){
 	ajaxApp(div,"controlador.php","action=mostrarResumenStatusProceso&status="+status+"&div="+div,"POST");
 }
 function Pagina(nroPagina,status,modelo,tipoStatus){
-	ajaxApp("resumen","controlador.php","action=mostrarResumen&status="+status+"&pag="+nroPagina+"&modelo="+modelo+"&tipoStatus="+tipoStatus,"POST");
+	ajaxApp("resumenStatus","controlador.php","action=mostrarResumen&status="+status+"&pag="+nroPagina+"&modelo="+modelo+"&tipoStatus="+tipoStatus,"POST");
 }
 function cerrarDiv(div){
 	$("#"+div).hide();
@@ -82,8 +77,4 @@ function verResumenEnviadosFolioDetalle(folio,modelo,filtro){
 }
 function PaginaResumenEnviadosFolio(nroPagina,folio,modelo,filtro){
 	ajaxApp("resumenStatus","controlador.php","action=verResumenEnviadosFolioDetalle&folio="+folio+"&modelo="+modelo+"&filtro="+filtro+"&pag="+nroPagina,"POST");
-}
-function verResumenStatus(status,div){
-	//alert("Status: "+status+"\n\nDiv: "+div);
-	ajaxApp(div,"controlador.php","action=filtrarModeloStatus&status="+status+"&div="+div,"POST");
 }

@@ -1,9 +1,9 @@
 <?php
-      include("../../clases/conexion/conexion.php");
-      
-      class modeloNextel{
+       session_start();
+include("../../clases/conexion/conexion.php");
+ class modeloNextel{
 
-	     public function mostrarResumenEnviadosFolio($folio,$modelo,$filtro){
+       public function mostrarResumenEnviadosFolio($folio,$modelo,$filtro){
 		$RegistrosAMostrar=25;
 		$i=0;
 		//estos valores los recibo por GET
@@ -138,7 +138,7 @@
 		     <tr>
 			    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;">&nbsp;<?=$rowEnviadosFolio['modelo'];?></td>
 			    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:right;"><?=$rowEnviadosFolio['Filas'];?>&nbsp;</td>
-			    <td style="height:25px; padding:5px; border-bottom:1px solid #999;">&nbsp;<a href="#" style="text-decoration:none;color:blue;" onclick="verResumenEnviadosFolioDetalle('<?=$folio;?>','<?=$rowEnviadosFolio['idModeloRadio'];?>','modelo')">Ver M&aacute;s</a></td>
+			    <td style="height:25px; padding:5px; border-bottom:1px solid #999;">&nbsp;<a href="#" onclick="verResumenEnviadosFolioDetalle('<?=$folio;?>','<?=$rowEnviadosFolio['idModeloRadio'];?>','modelo')">Ver M&aacute;s</a></td>
 	             </tr>
 <?
 		     }
@@ -173,9 +173,9 @@
 			    $totalEnviados+=$rowEnviadosFolio["Filas"];
 ?>
 		     <tr>
-			    <td width="29%" style="height:25px;border:1px solid #999; background:#ccc; text-align:left;"><?=$rowEnviadosFolio['lote'];?>: </td>
-			    <td width="9%" style="height:25px;border:1px solid #999; background:#ccc; text-align:center;"><a href="#" style="text-decoration:none;color:blue;" title="Detalle por modelo" onclick="verResumenEnviadosModelos('<?=$rowEnviadosFolio['lote'];?>','<?=$idDiv;?>')">[ + ]</a></td>
-			    <td width="42%" style="height:25px; border:1px solid #CCC; text-align:right;"><a href="#" style="text-decoration:none;color:blue;" onclick="verResumenEnviadosFolioDetalle('<?=$rowEnviadosFolio['lote'];?>','S/M','status')"><?=$rowEnviadosFolio['Filas'];?></a>&nbsp;</td>                
+			    <td width="30%" style="height:25px;border:1px solid #999; background:#ccc; text-align:left;"><?=$rowEnviadosFolio['lote'];?>: </td>
+			    <td width="9%" style="height:25px;border:1px solid #999; background:#ccc; text-align:center;"><a href="#" title="Detalle por modelo" onclick="verResumenEnviadosModelos('<?=$rowEnviadosFolio['lote'];?>','<?=$idDiv;?>')">[ + ]</a></td>
+			    <td width="42%" style="height:25px; border:1px solid #CCC; text-align:right;"><a href="#" onclick="verResumenEnviadosFolioDetalle('<?=$rowEnviadosFolio['lote'];?>','S/M','status')"><?=$rowEnviadosFolio['Filas'];?></a>&nbsp;</td>                
 		     </tr>
 		     <tr>
 			    <td colspan="5"><div id="<?=$idDiv;?>" style="background:#f0f0f0;"></div></td>
@@ -223,7 +223,15 @@
 		     <tr>
 			    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;">&nbsp;<?=$rowModelo['modelo'];?></td>
 			    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:right;"><?=$rowModelo['Filas'];?>&nbsp;</td>
-			    <td style="height:25px; padding:5px; border-bottom:1px solid #999;">&nbsp;<a href="#" style="text-decoration:none;color:blue;" onclick="verResumen('<?=$status;?>','<?=$rowModelo['idModeloRadio'];?>','proceso')">Ver M&aacute;s</a></td>
+			    <td style="height:25px; padding:5px; border-bottom:1px solid #999;">&nbsp;
+				   <a href="#" onclick="verResumen('<?=$status;?>','<?=$rowModelo['idModeloRadio'];?>','proceso')">Ver M&aacute;s</a>
+<?
+			    //echo $status;
+			    /*if($status){
+				   
+			    }*/
+?>
+			    </td>
 	             </tr>
 <?			
 		     }
@@ -233,29 +241,27 @@
 	      }
        }
 	
-      public function resumenStatus($mes,$anio,$diaActual){
-	    include("../../includes/conectarbase.php");
-	    $totalDias=$this->UltimoDia($anio,$mes);
-	    //$totalDias=UltimoDia($anio,$mes);
-	    $fecha1=$anio."-".$mes."-01";
-	    $fecha2=$anio."-".$mes."-".$totalDias;
-	    $sqlTotalEquipos="SELECT COUNT( * ) AS `Filas` , `statusProceso` FROM `equipos` GROUP BY `statusProceso` ORDER BY `statusProceso` ";
-	    $resTotalEquipos=mysql_query($sqlTotalEquipos,$this->conexionBd());
+	public function resumenStatus($mes,$anio,$diaActual){
+	      include("../../includes/conectarbase.php");
+		$totalDias=$this->UltimoDia($anio,$mes);
+		//$totalDias=UltimoDia($anio,$mes);
+		$fecha1=$anio."-".$mes."-01";
+		$fecha2=$anio."-".$mes."-".$totalDias;
+	
+		$sqlTotalEquipos="SELECT COUNT( * ) AS `Filas` , `statusProceso`
+		FROM `equipos`
+		GROUP BY `statusProceso`
+		ORDER BY `statusProceso` ";
+		$resTotalEquipos=mysql_query($sqlTotalEquipos,$this->conexionBd());
+//		$rowTotalEquipos=mysql_fetch_array($resTotalEquipos);
 ?>
-	    <script>
-		  $(function(){
-			$('table').visualize({type: 'pie', height: '250px', width: '250px',parseDirection:'x',appendTitle:false,appendKey:true,pieMargin:30,pieLabelPos:'inside',yLabelInterval:40,lineWeight:6,barMargin: 5,colors:['#be1e2d','#666699','#92d5ea','#ee8310','#8d10ee','#5a3b16','#26a4ed','#f45a90','#e9e744','#969DFE','#BCFE96','#FF6262','#9C8FA6']});
-		  });  
-	    </script>
-	    <table border="0" width="98%" cellpadding="1" cellspacing="1" style="margin:4px;">
-		  <caption>Resumen por Proceso</caption>		     
-			<thead>
-			      <tr>
-				    <td></td>
-				    <th scope="col">Total</th>				      
-			      </tr>
-			</thead>
-		  <tbody>
+		<table border="0" width="98%" cellpadding="1" cellspacing="1" style="margin:4px;">
+        	<tr>
+            	<td colspan="5">&nbsp;</td>
+	      </tr>
+			<tr>
+            	<td colspan="5">Resumen en el Sistema:</td>
+            </tr>
 <?
 		$i=0;
 		$cuentaTotalResumenProceso=0;
@@ -263,31 +269,23 @@
 			$idDiv="divDetalle".$i;
 			$cuentaTotalResumenProceso+=$rowTotalEquipos["Filas"];
 ?>
-			<!--<tr>
+			<tr>
 		         	<td width="49%" style="height:25px;border:1px solid #999; background:#ccc; text-align:left;"><?=$rowTotalEquipos['statusProceso'];?>: </td>
-			        <td width="9%" style="height:25px;border:1px solid #999; background:#ccc; text-align:center;"><a href="#" style="text-decoration:none;color:blue;" title="Detalle por modelo" onclick="verResumenStatusProceso('<?=$rowTotalEquipos['statusProceso'];?>','<?=$idDiv;?>')">[ + ]</a></td>
-				<td width="42%" style="height:25px; border:1px solid #CCC; text-align:right;"><a href="#" style="text-decoration:none;color:blue;" onclick="verResumen('<?=$rowTotalEquipos['statusProceso'];?>','S/M','proceso')"><?=$rowTotalEquipos['Filas'];?></a>&nbsp;</td>                
+			        <td width="9%" style="height:25px;border:1px solid #999; background:#ccc; text-align:center;"><a href="#" title="Detalle por modelo" onclick="verResumenStatusProceso('<?=$rowTotalEquipos['statusProceso'];?>','<?=$idDiv;?>')">[ + ]</a></td>
+				<td width="42%" style="height:25px; border:1px solid #CCC; text-align:right;"><a href="#" onclick="verResumen('<?=$rowTotalEquipos['statusProceso'];?>','S/M','proceso')"><?=$rowTotalEquipos['Filas'];?></a>&nbsp;</td>                
 		        </tr>
 			<tr>
 				<td colspan="5"><div id="<?=$idDiv;?>" style="background:#f0f0f0;"></div></td>
-			</tr>-->
-			<tr>
-			      <th scope="row" style="text-align: left;height: 15px;padding: 4px;"><?=$rowTotalEquipos['statusProceso'];?> </th>			    
-			      <td><?=$rowTotalEquipos['Filas'];?></td>
 			</tr>
-			<!--<tr>
-			      <td colspan="5"><div id="<?=$idDiv;?>" style="background:#f0f0f0;"></div></td>
-			</tr>-->
 <?		
 			$i+=1;
 		}
 ?>			
-		  <!--<tr>
-			<td colspan="2" style="height:25px;border:1px solid #999; background:#ccc; text-align:left; font-weight:bold;font-size:14px;">Total</td>
-			<td style="height:25px; border:1px solid #CCC; text-align:right; font-weight:bold;font-size:14px;"><?=$cuentaTotalResumenProceso;?></td>
-		  </tr>-->
-		  </tbody>
-	    </table>
+		     <tr>
+			    <td colspan="2" style="height:25px;border:1px solid #999; background:#ccc; text-align:left; font-weight:bold;font-size:14px;">Total</td>
+			    <td style="height:25px; border:1px solid #CCC; text-align:right; font-weight:bold;font-size:14px;"><?=$cuentaTotalResumenProceso;?></td>
+		     </tr>
+		</table>
 <?		
 	}
 	
@@ -357,7 +355,7 @@
 				<tr>
                 	<td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><?=$rowLote['modelo'];?></td>
                     <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><?=$rowLote['Filas'];?></td>
-                    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><a href="#" style="text-decoration:none;color:blue;" onclick="verResumenLoteModelo('<?=$lote;?>','<?=$rowLote['idModelo'];?>')" title="Ver Resumen" style="color:#06F;">Resumen</a></td>
+                    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><a href="#" onclick="verResumenLoteModelo('<?=$lote;?>','<?=$rowLote['idModelo'];?>')" title="Ver Resumen" style="color:#06F;">Resumen</a></td>
                 </tr>
 <?			
 			}
@@ -386,7 +384,7 @@
 				while($rowLote=mysql_fetch_array($resLote)){
 					$nombreDiv="div".$i;
 ?>
-            		<p style="margin:10px; font-size:10px; font-weight:bold;">&raquo;&raquo;<a href="#" style="text-decoration:none;color:blue;" title="Ver Resumen del Lote" onclick="verDetalleLote('<?=$rowLote['lote']?>','<?=$nombreDiv;?>')" style="color:#06F;"> <?=$rowLote['lote']?> </a></p>
+            		<p style="margin:10px; font-size:10px; font-weight:bold;">&raquo;&raquo;<a href="#" title="Ver Resumen del Lote" onclick="verDetalleLote('<?=$rowLote['lote']?>','<?=$nombreDiv;?>')" style="color:#06F;"> <?=$rowLote['lote']?> </a></p>
                     <div id="<?=$nombreDiv;?>" style="display:none;"></div>
 <?
 					$i+=1;
@@ -397,45 +395,63 @@
 		}
 	}
 	
-	public function mostrarResumenModeloStatus($status,$div){
-		$sqlModelo="SELECT COUNT( * ) AS `Filas` , modelo,equipos.id_modelo as idModeloRadio
+       public function mostrarResumenModeloStatus($status,$div){
+	      if($status != "ENVIADO" && $status != "SCRAP ENVIADO"){
+		     $sqlModelo="SELECT COUNT( * ) AS `Filas` , modelo,equipos.id_modelo as idModeloRadio
 					FROM equipos INNER JOIN cat_modradio ON equipos.id_modelo = cat_modradio.id_modelo
 					WHERE STATUS = '".$status."'
 					GROUP BY equipos.id_modelo
-					ORDER BY `Filas` ASC";
-		$resModelo=mysql_query($sqlModelo,$this->conexionBd());
-		if(mysql_num_rows($resModelo)==0){
-			echo "<br>Sin Registros.";
-		}else{
+					ORDER BY `Filas` ASC";     
+	      }else{
+		     $sqlModelo="SELECT COUNT( * ) AS `Filas` , modelo,equipos_enviados.id_modelo as idModeloRadio
+					FROM equipos_enviados INNER JOIN cat_modradio ON equipos_enviados.id_modelo = cat_modradio.id_modelo
+					WHERE STATUS = '".$status."'
+					GROUP BY equipos_enviados.id_modelo
+					ORDER BY `Filas` ASC";     
+	      }
+	      //echo $sqlModelo;
+	      $resModelo=mysql_query($sqlModelo,$this->conexionBd());
+	      if(mysql_num_rows($resModelo)==0){
+		     echo "<br>Sin Registros.";
+	      }else{
 ?>
-			<br />
-            <table border="0" cellpadding="1" cellspacing="1" width="95%" style="margin:5px; background:#FFF;">
-            	<tr>
-					<td colspan="3" style="text-align:right;"><a href="#" onclick="cerrarDiv('<?=$div;?>')">Cerrar Info</a></td>
-				</tr>
-				<tr>
-                	<td colspan="3" style="font-size:12px; height:25px; padding:5px;">Resumen por Modelo para el status <?=$status;?></td>
-                </tr>
-                <tr>
-                	<td width="30%" style="height:25px; padding:5px;background:#000; color:#FFF;">Modelo</td>
-                    <td width="21%" style="background:#000; color:#FFF;"># Registros</td>
-					<td width="49%" style="background:#000; color:#FFF;">&nbsp;</td>
-                </tr>
+	      <br />
+	      <table border="0" cellpadding="1" cellspacing="1" width="95%" style="margin:5px; background:#FFF;">
+		     <tr>
+			    <td colspan="3" style="text-align:right;"><a href="#" onclick="cerrarDiv('<?=$div;?>')">Cerrar Info</a></td>
+		     </tr>
+		     <tr>
+			    <td colspan="3" style="font-size:12px; height:25px; padding:5px;">Resumen por Modelo para el status <?=$status;?></td>
+		     </tr>
+		     <tr>
+			    <td width="30%" style="height:25px; padding:5px;background:#000; color:#FFF;">Modelo</td>
+			    <td width="21%" style="background:#000; color:#FFF;"># Registros</td>
+			    <td width="49%" style="background:#000; color:#FFF;">&nbsp;</td>
+		     </tr>
 <?
-			while($rowModelo=mysql_fetch_array($resModelo)){
+		     while($rowModelo=mysql_fetch_array($resModelo)){
 ?>
-				<tr>
-                	<td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;">&nbsp;<?=$rowModelo['modelo'];?></td>
-                    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:right;"><?=$rowModelo['Filas'];?>&nbsp;</td>
-					<td style="height:25px; padding:5px; border-bottom:1px solid #999;">&nbsp;<a href="#" style="text-decoration:none;color:blue;" onclick="verResumen('<?=$status;?>','<?=$rowModelo['idModeloRadio'];?>','status')">Ver M&aacute;s</a></td>
-                </tr>
+		     <tr>
+			    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;">&nbsp;<?=$rowModelo['modelo'];?></td>
+			    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:right;"><?=$rowModelo['Filas'];?>&nbsp;</td>
+			    <td style="height:25px; padding:5px; border-bottom:1px solid #999;">&nbsp;
+				   <a href="#" onclick="verResumen('<?=$status;?>','<?=$rowModelo['idModeloRadio'];?>','status')">Ver M&aacute;s</a>
+<?
+			    if($status=="SCRAP" && $_SESSION['usuario_nivel_nx']==0 || $_SESSION['usuario_nivel_nx']==3){
+?>
+				   | <a href="exportaScrap.php?status=<?=$status?>&modelo=<?=$rowModelo["modelo"]?>" target="_blank">Exportar</a>
+<?
+			    }
+?>			    
+			    </td>
+                     </tr>
 <?			
 			}
 ?>
-            </table><br />
+	      </table><br />
 <?		
-		}
-	}
+	      }
+       }
 	
 	public function mostrarResumen($status,$modelo,$tipo){
 		$RegistrosAMostrar=25;
@@ -454,12 +470,23 @@
 		}else if($tipo=="proceso"){
 		     $campoStatus="statusProceso";
 		}
-		if($modelo=="S/M"){
-			$sqlEquipos="select * from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-			$sqlEquipos1="select * from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."'";
+		if($modelo=="S/M"){		     
+			    if($status != "ENVIADO" && $status != "SCRAP ENVIADO"){
+				  // echo "entro<br>"; echo $status."<br>";
+				   $sqlEquipos="select * from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+				   $sqlEquipos1="select * from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."'";
+			    }else{
+				   $sqlEquipos="select * from equipos_enviados inner join cat_modradio on equipos_enviados.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+				   $sqlEquipos1="select * from equipos_enviados inner join cat_modradio on equipos_enviados.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."'";
+			    }
 		}else{
-			$sqlEquipos="select * from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' and equipos.id_modelo='".$modelo."' LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-			$sqlEquipos1="select * from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' and equipos.id_modelo='".$modelo."'";
+			    if($status != "ENVIADO" && $status != "SCRAP ENVIADO"){
+				   $sqlEquipos="select * from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' and equipos.id_modelo='".$modelo."' LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+				   $sqlEquipos1="select * from equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' and equipos.id_modelo='".$modelo."'";
+			    }else{
+				   $sqlEquipos="select * from equipos_enviados inner join cat_modradio on equipos_enviados.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' and equipos_enviados.id_modelo='".$modelo."' LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+				   $sqlEquipos1="select * from equipos_enviados inner join cat_modradio on equipos_enviados.id_modelo=cat_modradio.id_modelo where ".$campoStatus."='".$status."' and equipos_enviados.id_modelo='".$modelo."'";
+			    }
 		}
 		//echo $sqlEquipos;
 		
@@ -513,14 +540,15 @@
                     </td>
                 </tr>
 				<tr>
-					<td width="11%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Modelo</td>
-					<td width="22%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Imei</td>
-					<td width="19%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Serial</td>
-					<td width="19%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Sim</td>
-					<td width="14%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Folio</td>
-					<td width="34%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Status</td>
-					<td width="34%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Status Proceso</td>
-					<td width="34%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">MFGDATE</td>
+					<td width="10%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Modelo</td>
+					<td width="10%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Imei</td>
+					<td width="10%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Serial</td>
+					<!--<td width="19%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Sim</td>-->
+					<td width="11%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Folio</td>
+					<td width="20%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Status</td>
+					<td width="20%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">MFGDATE</td>
+					<td width="10%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">Tipo</td>
+					<td width="37%" style="background:#000; color:#FFF; height:30px; padding:4px; text-align:center;">C.I.</td>
 				</tr>
 <?
 			$color="#E1E1E1";
@@ -530,11 +558,12 @@
 					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['modelo'];?></td>
 					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['imei'];?></td>
 					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['serial'];?></td>
-					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['sim'];?></td>
+					<!--<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['sim'];?></td>-->
 					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['lote'];?></td>
 					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['status'];?></td>
-					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['statusProceso'];?></td>
-					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; text-align:center;"><?=$rowEquipos['mfgdate'];?></td>
+					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['mfgdate'];?></td>
+					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; border-right:1px solid #CCC; text-align:center;"><?=$rowEquipos['tipoEquipo'];?></td>
+					<td style="background:<?=$color;?>;height:25px; padding:4px; border-bottom:1px solid #CCC; text-align:center;"><?=$rowEquipos['cambioIdentidad'];?></td>
 				</tr>
 <?			
 			    ($color=="#E1E1E1") ? $color="#FFF" : $color="#E1E1E1";
@@ -545,129 +574,69 @@
 		}
 	}
 	
-      public function filtrarModeloStatus($status,$div){
-	    //se filtran los status disponibles
-	    $sqlStatusWip="SELECT status FROM equipos GROUP BY status";
-	    $resStatusWip=mysql_query($sqlStatusWip,$this->conexionBd());
-	    $rowStatusWip=mysql_fetch_array($resStatusWip);
-	    //if($status=="SCRAP" || $status=="WIP" || $status=="RETENCION" || $status=="RETENCION2" || $status=="SCRAP POR ENVIAR"){
-	    if(!in_array($status,$rowStatusWip)){  
-		$sqlModelo="SELECT COUNT( * ) AS `Filas` , modelo,equipos.id_modelo as idModeloRadio
-			FROM equipos INNER JOIN cat_modradio ON equipos.id_modelo = cat_modradio.id_modelo
-			WHERE STATUS = '".$status."'
-			GROUP BY equipos.id_modelo
-			ORDER BY `Filas` ASC";  
-	    }else if($rowStatusWip["status"]=="ENVIADO"){
-		  $sqlModelo="SELECT COUNT( * ) AS `Filas` , modelo,equipos.id_modelo as idModeloRadio
-			FROM equipos INNER JOIN cat_modradio ON equipos.id_modelo = cat_modradio.id_modelo
-			WHERE STATUS = '".$status."'
-			GROUP BY equipos.id_modelo
-			ORDER BY `Filas` ASC";  
-	    }else{		  
-		  $sqlModelo="SELECT COUNT( * ) AS `Filas` , modelo,equipos_enviados.id_modelo as idModeloRadio
-			FROM equipos_enviados INNER JOIN cat_modradio ON equipos_enviados.id_modelo = cat_modradio.id_modelo
-			WHERE STATUS = '".$status."'
-			GROUP BY equipos_enviados.id_modelo
-			ORDER BY `Filas` ASC";
-	    }
-	    //echo "<br>".$sqlModelo;
-	    $resModelo=mysql_query($sqlModelo,$this->conexionBd());
-	    if(mysql_num_rows($resModelo)==0){
-		  echo "<br>Sin Registros.";
-	    }else{
-		  //echo "";
-?>		  
-		  <div style="height: 20px;padding: 5px;text-align: right;"><a href="#" style="color:blue;" onclick="cerrarDiv('<?=$div;?>')">Cerrar</a></div>
-		  <div style="width: 210px;height: 25px;border: 0px solid #000;overflow: hidden;">
-			<div style="float: left;border: 1px solid #FFF; width: 72px;padding: 3px;background:#000; color:#FFF;text-align: center;">Modelo</div>
-			<div style="float: left;border: 1px solid #FFF; width: 72px;padding: 3px;background:#000; color:#FFF;text-align: center;">#Registros</div>
-			<div style="float: left;border: 1px solid #FFF; width: 38px;padding: 3px;background:#000; color:#FFF;">&nbsp;</div>
-		  </div><div style="margin-top: 3px;"></div>
-<?
-			while($rowModelo=mysql_fetch_array($resModelo)){
+	public function resumen($mes,$anio,$diaActual){
+	      include("../../includes/conectarbase.php");
+	      $totalDias=$this->UltimoDia($anio,$mes);
+	      //$totalDias=UltimoDia($anio,$mes);
+	      $fecha1=$anio."-".$mes."-01";
+	      $fecha2=$anio."-".$mes."-".$totalDias;
+	
+	      $sqlTotalEquipos="SELECT COUNT( * ) AS `Filas` , `status` FROM `equipos` GROUP BY `status` ORDER BY `status`";
+	      $sqlTotalEquipos1="SELECT COUNT( * ) AS `Filas` , `status` FROM `equipos_enviados` GROUP BY `status` ORDER BY `status`";
+	      $resTotalEquipos=mysql_query($sqlTotalEquipos,$this->conexionBd());
+	      $resTotalEquipos1=mysql_query($sqlTotalEquipos1,$this->conexionBd());
+//		$rowTotalEquipos=mysql_fetch_array($resTotalEquipos);
 ?>
-		  <div style="width: 210px;height: 25px;border: 0px solid #f0f0f0;overflow: hidden;margin-bottom: 4px;">
-			<div style="float: left;border-bottom: 1px solid #CCC; width: 72px;padding: 3px;background:#FFF; color:#000;text-align: center;"><?=$rowModelo['modelo'];?></div>
-			<div style="float: left;border-bottom: 1px solid #CCC; width: 72px;padding: 3px;background:#FFF; color:#000;text-align: center;"><?=$rowModelo['Filas'];?></div>
-			<div style="float: left;border-bottom: 1px solid #CCC; width: 38px;padding: 3px;background:#FFF; color:#000;"><a href="#" style="text-decoration:none;color:blue;" onclick="verResumen('<?=$status;?>','<?=$rowModelo['idModeloRadio'];?>','status')">Ver</a></div>
-		  </div><div style="clear:both;"></div>			
-<?			
-			}
-		}
-      }
-      
-      public function resumen($mes,$anio,$diaActual){// SFR_002320
-	    include("../../includes/conectarbase.php");
-	    $totalDias=$this->UltimoDia($anio,$mes);	    
-	    $fecha1=$anio."-".$mes."-01";
-	    $fecha2=$anio."-".$mes."-".$totalDias;
-	    $sqlTotalEquipos="SELECT COUNT( * ) AS `Filas` , `status` FROM `equipos` GROUP BY `status` ORDER BY `status` ";
-	    $sqlTotalEquipos1="SELECT COUNT( * ) AS `Filas` , `status` FROM `equipos_enviados` GROUP BY `status` ORDER BY `status` ";
-	    $resTotalEquipos=mysql_query($sqlTotalEquipos,$this->conexionBd());
-	    $resTotalEquipos1=mysql_query($sqlTotalEquipos1,$this->conexionBd());	      
-	    $i=0;
-	    $cuentaTotalResumen=0; $nombresStatus="";
-	    while($rowTotalEquipos=mysql_fetch_array($resTotalEquipos)){
-		  $idDiv="divDetalle".$i;
-		  $cuentaTotalResumen+=$rowTotalEquipos['Filas'];
-		  $status=$rowTotalEquipos['status'];
-		  $nombreDiv="div_".$i;
-?>
-		  <div class="btnOpcionesInicioSubBoton" onclick="verResumenStatus('<?=$status;?>','<?=$nombreDiv;?>')"><?=$status;?><div style='float:right;'><a href='#' onclick="verResumen('<?=$status?>','S/M','status')" style='color:blue;'><?=$rowTotalEquipos['Filas'];?></a></div></div>
-		  <div id='<?=$nombreDiv;?>' class='divOpcionesResumen' style='display:none;'></div>
-<?
-		  $status+=$rowTotalEquipos['status'];
-		  $i+=1;
-	    }
-	    while($rowTotalEquipos1=mysql_fetch_array($resTotalEquipos1)){
-		  $idDiv="divDetalle".$i;
-		  $cuentaTotalResumen1+=$rowTotalEquipos1['Filas'];
-		  $status=$rowTotalEquipos1['status'];			
-		  $nombreDiv="div_".$i;
-?>
-		  <div class="btnOpcionesInicioSubBoton" onclick="verResumenStatus('<?=$status;?>','<?=$nombreDiv;?>')"><?=$status;?><div style='float:right;'><a href='#' style='color:blue;'><?=$rowTotalEquipos1['Filas'];?></a></div></div><div id='<?=$nombreDiv;?>' class='divOpcionesResumen' style='display:none;'></div>			
-<?		
-		  $i+=1;
-	    }
-      }
-      
-      public function resumenPrueba($mes,$anio,$diaActual){
-	    include("../../includes/conectarbase.php");
-	    $totalDias=$this->UltimoDia($anio,$mes);
-	    //$totalDias=UltimoDia($anio,$mes);
-	    $fecha1=$anio."-".$mes."-01";
-	    $fecha2=$anio."-".$mes."-".$totalDias;
-	    $sqlTotalEquipos="SELECT COUNT( * ) AS `Filas` , `status` FROM `equipos` GROUP BY `status` ORDER BY `status` ";
-	    $sqlTotalEquipos1="SELECT COUNT( * ) AS `Filas` , `status` FROM `equipos_enviados` GROUP BY `status` ORDER BY `status` ";
-	    $resTotalEquipos=mysql_query($sqlTotalEquipos,$this->conexionBd());
-	    $resTotalEquipos1=mysql_query($sqlTotalEquipos1,$this->conexionBd());
-?>
-	    <div style="height:60px;"></div>		  
+	      <table border="0" width="98%" cellpadding="1" cellspacing="1" style="margin:4px;">
+		     <tr>
+			    <td colspan="5">&nbsp;</td>
+		     </tr>
+		     <tr>
+			    <td colspan="5">Resumen en el Sistema:</td>
+		     </tr>
 <?
 		$i=0;
-		$cuentaTotalResumen=0; $nombresStatus="";
+		$cuentaTotalResumen=0;
 		while($rowTotalEquipos=mysql_fetch_array($resTotalEquipos)){
 			$idDiv="divDetalle".$i;
 			$cuentaTotalResumen+=$rowTotalEquipos['Filas'];
-			$status=$rowTotalEquipos['status'];
-			$nombreDiv="div_".$i;
 ?>
-			<div class='btnOpcionesInicioSubBoton' onclick='verResumenStatus(\"<?=$status;?>\",\"<?=$nombreDiv;?>\")'><?=$status;?><div style='float:right;'><a href='#' style='color:blue;'><?=$rowTotalEquipos['Filas'];?></a></div></div><div id='<?=$nombreDiv;?>' class='divOpcionesResumen' style='display:none;'></div>
-<?
-			$status+=$rowTotalEquipos['status'];
-			$i+=1;
-		}
-		while($rowTotalEquipos1=mysql_fetch_array($resTotalEquipos1)){
-			$idDiv="divDetalle".$i;
-			$cuentaTotalResumen1+=$rowTotalEquipos1['Filas'];
-			$status=$rowTotalEquipos1['status'];			
-			$nombreDiv="div_".$i;
-?>
-			<div class='btnOpcionesInicioSubBoton' onclick='verResumenStatus(\"<?=$status;?>\",\"<?=$nombreDiv;?>\")'><?=$status;?><div style='float:right;'><a href='#' style='color:blue;'><?=$rowTotalEquipos1['Filas'];?></a></div></div><div id='<?=$nombreDiv;?>' class='divOpcionesResumen' style='display:none;'></div>			
+			<tr>
+			    <td width="49%" style="height:25px;border:1px solid #999; background:#ccc; text-align:left;"><?=$rowTotalEquipos['status'];?>: </td>
+			    <td width="9%" style="height:25px;border:1px solid #999; background:#ccc; text-align:center;"><a href="#" title="Detalle por modelo" onclick="verResumenstatus('<?=$rowTotalEquipos['status'];?>','<?=$idDiv;?>')">[ + ]</a></td>
+			    <td width="42%" style="height:25px; border:1px solid #CCC; text-align:right;"><a href="#" onclick="verResumen('<?=$rowTotalEquipos['status'];?>','S/M','status')"><?=$rowTotalEquipos['Filas'];?></a>&nbsp;</td>                
+		       </tr>
+			<tr>
+				<td colspan="5"><div id="<?=$idDiv;?>" style="background:#f0f0f0;"></div></td>
+			</tr>
 <?		
 			$i+=1;
 		}
-      }
+		
+		while($rowTotalEquipos1=mysql_fetch_array($resTotalEquipos1)){
+			$idDiv="divDetalle".$i;
+			$cuentaTotalResumen+=$rowTotalEquipos1['Filas'];
+?>
+			<tr>
+			    <td width="49%" style="height:25px;border:1px solid #999; background:#ccc; text-align:left;"><?=$rowTotalEquipos1['status'];?>: </td>
+			    <td width="9%" style="height:25px;border:1px solid #999; background:#ccc; text-align:center;"><a href="#" title="Detalle por modelo" onclick="verResumenstatus('<?=$rowTotalEquipos1['status'];?>','<?=$idDiv;?>')">[ + ]</a></td>
+			    <td width="42%" style="height:25px; border:1px solid #CCC; text-align:right;"><a href="#" onclick="verResumen('<?=$rowTotalEquipos1['status'];?>','S/M','status')"><?=$rowTotalEquipos1['Filas'];?></a>&nbsp;</td>                
+		       </tr>
+			<tr>
+				<td colspan="5"><div id="<?=$idDiv;?>" style="background:#f0f0f0;"></div></td>
+			</tr>
+<?		
+			$i+=1;
+		}
+?>			
+		     <tr>
+			    <td colspan="2" style="height:25px;border:1px solid #999; background:#ccc; text-align:left; font-weight:bold;font-size:14px;">Total</td>
+			    <td style="height:25px; border:1px solid #CCC; text-align:right; font-weight:bold;font-size:14px;"><?=$cuentaTotalResumen;?></td>
+		     </tr>
+	      </table>
+<?		
+	}
+	
 	
 	public function calendarizacion($mes,$anio,$diaActual){		
 		$mes=$mes;//date("m");

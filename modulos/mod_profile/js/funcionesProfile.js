@@ -73,4 +73,7 @@ function cambiarImagen(idUsuario){
 }
 function acercaDe(){
 	ajaxApp("capaPanel","controladorPerfil.php","action=acercaDe","POST");
-}	
+}
+function notasVersion(){
+	ajaxApp("capaPanel","controladorPerfil.php","action=notasVersion","POST");
+}

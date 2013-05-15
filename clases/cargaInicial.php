@@ -39,7 +39,7 @@
 				<p>Bienvenid@:</p>
 				<p><hr style='background:#CCC;' /></p>
 				<p>Antes de comenzar...</p><br />
-				<p align='justify'>Se ha verificado que el password de su cuenta aun no se ha personalizado, para poder realizar esta tarea, solo de un clic en su nombre de usuario situado en la parte inferior,
+				<p align='justify'>Se ha verificado que el password de su cuenta aun no se ha personalizado, para poder realizar esta tarea, solo de un clic en su nombre de usuario situado en la parte superior,
 				mostrar&aacute; una pantalla con el Perfil de usuario as&iacute; como una opci&oacute;n para poder cambiar el mismo.
 				</p><br />
 				<p>Si tiene preguntas sobre esta actualizaci&oacute;n notifiquela al &aacute;rea de Sistemas.</p>
