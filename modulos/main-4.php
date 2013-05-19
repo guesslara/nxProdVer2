@@ -39,7 +39,7 @@
 	    contenedorPrincipal();
 	});
 	ClosingVar =true
-	//window.onbeforeunload = ExitCheck;
+	window.onbeforeunload = ExitCheck;
 	function ExitCheck(){  
 		///control de cerrar la ventana///
 	 	if(ClosingVar == true){
@@ -50,6 +50,7 @@
 	setInterval(vMantto,10000);
         setInterval(vActNuevas,10000);
 	setInterval(vActSistema,10000);
+	setInterval(vSesion,1500000);
 	window.onresize=contenedorPrincipal;
         function contenedorPrincipal(){
             var altoDoc=$("#contenedorAppMain").height();	    
@@ -119,6 +120,7 @@
 /*Fin Buscador UI*/
 </style>
 <body>
+    <div id="session"></div>
     <div id="cargaPerfil"></div>
     <div id="contenedorAppMain">
         <div id="barraHerramientasUsuario">

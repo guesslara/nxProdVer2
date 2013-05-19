@@ -1,5 +1,6 @@
 <?php
       include("../../clases/conexion/conexion.php");
+      include("../../clases/claseGrid3.php");
       
       class modeloNextel{
 
@@ -438,6 +439,40 @@
 	}
 	
 	public function mostrarResumen($status,$modelo,$tipo){
+	    include("../../includes/config.inc.php");
+	    $grid= new grid3($host,$usuario,$pass,$db);
+	    if($tipo=="status"){
+		  $campoStatus="status";
+	    }else if($tipo=="proceso"){
+		  $campoStatus="statusProceso";
+	    }
+	    /*Lista de Parametros*/
+	    $registrosAMostrar=25;
+	    //nombres de las columnas del Grid
+	    $camposTitulo=array("Modelo","Imei","Serial","Sim","Folio","Status","Status Proceso","MFGDate");
+	    //los campos de la tabla
+	    $campos=" modelo,imei,serial,sim,lote,status,statusProceso,mfgdate";
+	    //campo por el que se van a ordenar
+	    $campoOrden="id_radio";
+	    $condiciones="--";
+	    //tabla
+	    $from=" FROM equipos INNER JOIN cat_modradio ON equipos.id_modelo = cat_modradio.id_modelo";
+	    if($condiciones=="--")
+		$where=" WHERE ".$campoStatus." = '".$status."'";
+	    $tituloReporte="Listado de equipos por Status ".$status;
+	    $fechaInicial="";
+	    $fechaTermino="";
+	    $tipoOrden=" ASC ";
+	    if(empty($_REQUEST["pagina"])){
+		$pagina=0;
+	    }else{
+		$pagina=$_REQUEST["pagina"];
+	    }	    
+	    /*Fin de los parametros*/
+	    $grid->mostrarListado($camposTitulo,$fechaInicial,$fechaTermino,$campos,$campoOrden,$tipoOrden,$condiciones,$registrosAMostrar,$from,$where,$tituloReporte,$pagina);
+	}
+	
+	public function mostrarResumenXXX($status,$modelo,$tipo){
 		$RegistrosAMostrar=25;
 		$i=0;
 		//estos valores los recibo por GET

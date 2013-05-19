@@ -30,7 +30,7 @@
 	
 	function mostrarFormBug(){
 ?>
-		<table width="100%" border="0" cellspacing="1" cellpadding="1">                  
+		<table width="100%" border="0" cellspacing="1" cellpadding="1" style="font-size: 10px;">                  
                   <tr>
 			<td style="font-size:14px;background:#CCC;color:#000;height:25px;padding:5px;">Sisco - Feedback</td>
 		  </tr>

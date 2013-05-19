@@ -14,8 +14,8 @@
 		}
 		
 		public function verificaUsuarioSistema($usuarioV,$passV){//metodo para la verificaion del usuario en la Base de datos			
-			//$datos=new array("0","0");
-			$sqlVer="Select * from userdbnextel where usuario='".$usuarioV."' and pass='".md5($passV)."'";
+			require("../../includes/config.inc.php");
+			$sqlVer="Select * from ".$tabla_usuarios." where usuario='".$usuarioV."' and pass='".md5($passV)."'";
 			$resVer=mysql_query($sqlVer,$this->conectarBd());
 			$rowVer=mysql_fetch_array($resVer);
 			$datos[0]=mysql_num_rows($resVer);

@@ -127,3 +127,6 @@ function mostrarPerfilUsuario(){
 	//alert("Perfil");
 	ajaxApp("cargaPerfil","funcionesMain.php","action=verPerfil","POST");
 }
+function vSesion(){
+	ajaxApp("session","vSesion.php","","POST");
+}

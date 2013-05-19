@@ -38,7 +38,7 @@
 			return $noRegs;
 		}//fin funcion
 		
-		/*public function buscarImeiEnviado($imei){
+		public function buscarImeiEnviadoProceso($imei){
 			$this->conexionBd();
 			$sqlImei="select status from equipos where imei='".$imei."' and status IN ('ENVIADO','RETENCION')";
 			$resImei=mysql_query($sqlImei,$this->conexion);
@@ -68,19 +68,13 @@
 			$resImei=mysql_query($sqlImei,$this->conexion);
 			$noRegs=mysql_num_rows($resImei);
 			return $noRegs;
-		}//fin funcion
+		}//fin funcion		
 		
 		public function buscarImei($imei){
 			$this->conexionBd();
 			$sqlImei="select * from equipos where imei='".$imei."'";
 			$resImei=mysql_query($sqlImei,$this->conexion);
 			$noRegs=mysql_num_rows($resImei);
-			if($noRegs==0){
-				//se procede a buscar en los equipos enviados
-				$sqlBuscaEnviadoSiExiste="select * from equipos_enviados where (imei='".$imei."' and status IN ('ENVIADO','RETENCION')) and activo='0'";
-				$resBuscaEnviadoSiExiste=mysql_query($sqlBuscaEnviadoSiExiste,$this->conexion);
-				$noRegs=mysql_num_rows($resBuscaEnviadoSiExiste);
-			}
 			return $noRegs;
 		}//fin funcion
 		

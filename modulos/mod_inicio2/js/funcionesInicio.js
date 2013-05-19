@@ -44,7 +44,11 @@ function resumenStatus(mes,anio,diaActual){
 }
 function verResumen(status,modelo,tipoStatus){
 	//alert("verResumen");
-	ajaxApp("resumen","controlador.php","action=mostrarResumen&status="+status+"&modelo="+modelo+"&tipoStatus="+tipoStatus,"POST");
+	//ajaxApp("resumen","controlador.php","action=mostrarResumen&status="+status+"&modelo="+modelo+"&tipoStatus="+tipoStatus,"POST");
+	$("#ventanaEnsambleContenido2").hide();
+	$("#ventanaConsultasFrame").show();
+	$("#ventanaConsultasFrame").attr("src","listadoStatus.php?status="+status+"&modelo="+modelo+"&tipoStatus="+tipoStatus);
+	//ajaxApp("resumen","listadoStatus.php","action=mostrarResumen&status="+status+"&modelo="+modelo+"&tipoStatus="+tipoStatus,"POST");
 }
 function verResumenstatus(status,div){
 	//alert(status);

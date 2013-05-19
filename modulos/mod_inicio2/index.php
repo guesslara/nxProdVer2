@@ -57,6 +57,8 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 		$("#infoEnsamble3").css("height",altoCuerpo+"px");
 		$("#ventanaEnsambleContenido2").css("height",altoCuerpo+"px");
 		$("#ventanaEnsambleContenido2").css("width",(anchoCuerpo)+"px");
+		$("#ventanaConsultasFrame").css("height",altoCuerpo+"px");
+		$("#ventanaConsultasFrame").css("width",(anchoCuerpo)+"px");
 	}
 	
 	window.onresize=redimensionar;
@@ -84,6 +86,7 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 		<div id="ventanaEnsambleContenido2" class="ventanaEnsambleContenido" style="border: 0px solid green;display: none;">
 			<iframe src="grafica1.php" style="border: 0px solid green;width: 68%;height: 99%;overflow: auto;">El navegador no acepta iframes</iframe>
 		</div>
+		<iframe id="ventanaConsultasFrame" class="ventanaEnsambleContenido" style="border: 1px solid #CCC;display: none;"></iframe>
 		<div style="clear:both;"></div>
 		<!--<div id="barraInferiorEnsamble">			
 			<div id="erroresCaptura"></div>
