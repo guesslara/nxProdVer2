@@ -5,6 +5,7 @@
         private $passDb;
         private $dbDb;
         private $linkBase;
+	private $arrayParametros;
         
         public function __construct($host,$usuario,$pass,$db){
             $this->hostDb=$host;
@@ -34,8 +35,14 @@
             
         }
         
-        public function mostrarListado($camposTitulo,$fecha1,$fecha2,$campos,$campoOrden,$tipoOrden,$condiciones,$regsxpagina,$from,$where,$titulosReporte,$pag,$url){
-            //set_time_limit(0);                                    
+        public function mostrarListado($camposTitulo,$fecha1,$fecha2,$campos,$campoOrden,$tipoOrden,$condiciones,$regsxpagina,$from,$where,$titulosReporte,$pag,$arrayGet){
+	    $url=$_SERVER["PHP_SELF"];
+            //set_time_limit(0);
+	    $this->arrayParametros=$arrayGet;	    
+	    
+	    $parametrosPaginador=implode($this->arrayParametros,",");
+	    
+	    
             $RegistrosAMostrar=$regsxpagina;
             $i=0;
             if($pag!=0){
@@ -60,8 +67,8 @@
                 $ordenConsulta=" ORDER BY ".$campoOrden." ".$tipoOrden;
             }
             //se arma la consulta
-            $sqlNueva=$select.$from.$where.$ordenConsulta.$limit;
-            $sqlNueva1=$select.$from.$where.$ordenConsulta;
+            echo $sqlNueva=$select.$from.$where.$ordenConsulta.$limit;
+            echo "<br>".$sqlNueva1=$select.$from.$where.$ordenConsulta;
             
             $resultadoNueva=mysql_query($sqlNueva,$this->linkBase);      //se ejecutan las consultas
             $resultadoNueva1=mysql_query($sqlNueva1,$this->linkBase);
@@ -78,21 +85,21 @@
                     <strong><?=$titulosReporte;?></strong><br />                    
 		</div>
                 <div style="border: 0px solid #FF0000;text-align:center; height:20px;font-size: 12px; padding:5px;">
-		    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=1" title="Primero" style="cursor:pointer; text-decoration:none;">|&lt;</a>&nbsp;</div>
+		    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=1&action=resultados&parametros=<?=$parametrosPaginador;?>" title="Primero" style="cursor:pointer; text-decoration:none;">|&lt;</a>&nbsp;</div>
 <?
 		if($PagAct>1){ 
 ?>
-                    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=<?=$PagAnt;?>"  title="Anterior" style="cursor:pointer; text-decoration:none;">&lt;&lt;</a>&nbsp;</div>
+                    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=<?=$PagAnt;?>&action=resultados&parametros=<?=$parametrosPaginador;?>"  title="Anterior" style="cursor:pointer; text-decoration:none;">&lt;&lt;</a>&nbsp;</div>
 <?
 		}
 		echo "<div style='float: left;width: 80px;height: 15px;border: 1px solid #CCC;padding: 2px;'><strong>".$PagAct."/".$PagUlt."</strong></div>";
 		if($PagAct<$PagUlt){
 ?>
-                    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=<?=$PagSig;?>"  title="Siguiente" style="cursor:pointer; text-decoration:none;">&gt;&gt;</a>&nbsp;</div>
+                    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=<?=$PagSig;?>&action=resultados&parametros=<?=$parametrosPaginador;?>"  title="Siguiente" style="cursor:pointer; text-decoration:none;">&gt;&gt;</a>&nbsp;</div>
 <?
 		}
 ?>     
-                    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=<?=$PagUlt;?>"  title="Ultimo" style="cursor:pointer; text-decoration:none;">&gt;|</a>&nbsp;</div>
+                    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=<?=$PagUlt;?>&action=resultados&parametros=<?=$parametrosPaginador;?>"  title="Ultimo" style="cursor:pointer; text-decoration:none;">&gt;|</a>&nbsp;</div>
 		    <div style="float:right;width: 200px;height: 15px;text-align: left;border: 1px solid #CCC;padding: 2px;font-weight: bold;font-size: 12px;">Resultados:&nbsp;<?=$NroRegistros;?></div>
                 </div>                
 		
