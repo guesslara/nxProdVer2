@@ -1,8 +1,14 @@
 <?
 	session_start();
+	include("../../includes/txtApp.php");
+	//print_r($_SESSION[$txtApp['session']['idUsuario']]);
+	if(!isset($_SESSION[$txtApp['session']['idUsuario']])){
+		header("../mod_login/index.php");
+		exit;
+	}
 	$mes=date("m");
 	$anio=date("Y");
-	$diaActual=date("d");	
+	$diaActual=date("d");
 	include("../../includes/cabecera.php");
 ?>
 <style type="text/css">

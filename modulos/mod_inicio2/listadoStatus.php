@@ -1,7 +1,12 @@
 <?php
     include("../../clases/claseGrid3.php");
     include("../../includes/config.inc.php");
-    //session_start();
+    include("../../includes/txtApp.php");
+    session_start();
+    if(!isset($_SESSION[$txtApp['session']['idUsuario']])){
+	header("../mod_login/index.php");
+	exit;
+    }
     //print_r($_SESSION);
     //print_r($_GET);
     $url=$_SERVER["PHP_SELF"];
