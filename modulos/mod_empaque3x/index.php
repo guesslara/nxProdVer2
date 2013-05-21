@@ -58,7 +58,6 @@
 	$(document).ready(function(){
 		redimensionar();
 		listarCapturas('capturas');
-		//mostrarFormBounce();
 	});
 	
 	function redimensionar(){
@@ -93,7 +92,6 @@
 		<div id="barraOpcionesEnsamble">
 			<div class="opcionesEnsamble" onclick="nuevaEntrega()" title="Capturar Equipo OK">Nueva Captura</div>
 			<div class="opcionesEnsamble" onclick="enviarAValidar()" title="Enviar a Validar">Enviar a Validar</div>
-			<div class="opcionesEnsamble" onclick="mostrarFormBounce()" title="Enviar a Validar">Reemplazos Bounce</div>
 			<!--<div class="opcionesEnsambleFinalizar" onclick="generarVentana()" title="Finalizar Entregas">Finalizar Entregas</div>-->
 			<div id="cargadorEmpaque" style="float:right;width:200px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:13px;text-align:right;"></div>
 		</div>
@@ -210,18 +208,10 @@
 		<div id="listadoEmpaqueFinalizacion" style="border:1px solid #CCC; margin:4px; font-size:10px;height:87%; overflow:auto;"></div>
 	</div>
 </div>
-<div id="opcionFormBounce" style="display:none;position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: url(../../img/desv.png) repeat;">
-	<div id="msgFlexCaptura" style="position: absolute;width: 500px;height: 400px;left:50%;top:50%;margin-left:-250px;margin-top:-200px;">
-		<div id="advertencia">Reemplazos Bounce</div>
-		<div id="formBounceReemplazo" style="height:258px;width:488px;padding:5px;text-align:left;font-size:12px;border: 0px solid #FF0000;">
-				
-		</div>
-	</div>
-</div>
 <div id="opcionFormFlex" style="display:none;position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: url(../../img/desv.png) repeat;">
 	<div id="msgFlexCaptura">
 		<div id="advertencia">Advertencia...</div>
-		<div style="height:118px;width:99.5%;padding:5px;text-align:left;font-size:12px;overflow: auto;">
+		<div style="height:118px;width:99.5%;padding:5px;text-align:center;font-size:12px;">
 			<br><br>¿Desea capturar los Equipos con Flex Nuevo?<br><br>		
 			<input type="button" id="btnFormFlexSi" value="S&iacute;" onclick="colocaValorFlex('nuevo')">
 			<input type="button" id="btnFormFlexNo" value="No" onclick="colocaValorFlex('procesado')">	

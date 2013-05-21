@@ -103,7 +103,7 @@
 		    <div style="float:right;width: 200px;height: 15px;text-align: left;border: 1px solid #CCC;padding: 2px;font-weight: bold;font-size: 12px;">Resultados:&nbsp;<?=$NroRegistros;?></div>
                 </div>                
 		
-        <div align="left" style="margin:5px 0px 0px 4px;">
+		<div align="left" style="margin:5px 0px 0px 4px;">
                     <form name="frm_consultas" id="frm_contenedor">
                         <table border="0" cellpadding="1" cellspacing="1" style="width:auto;font-size: 10px;" >							  
                             <tr>

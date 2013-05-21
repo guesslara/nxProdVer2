@@ -1,16 +1,16 @@
 <?php
+    session_start();
     include("../../clases/claseGrid3.php");
     include("../../includes/config.inc.php");
     include("../../includes/txtApp.php");
-    session_start();
+    
     if(!isset($_SESSION[$txtApp['session']['idUsuario']])){
 	echo "<script type='text/javascript'> alert('Su Sesion ha caducado por inactividad'); </script>";	
 	exit;
     }
        
     if($_GET["action"]=="resultados"){	
-	$param=explode(",",$_GET["parametros"]);
-	
+	$param=explode(",",$_GET["parametros"]);	
     }else{	
 	$nombreParametros=array("status","modelo","tipoStatus");
 	for($i=0;$i<count($_GET);$i++){	    
@@ -29,6 +29,7 @@
     }
     
     $grid= new grid3($host,$usuario,$pass,$db);
+    
     /*Lista de Parametros*/
     $registrosAMostrar=25;
     //nombres de las columnas del Grid

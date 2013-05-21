@@ -3,7 +3,7 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 #contenedorEnsamble{height:99%; position:relative;margin:0 auto 0 auto; width:99.5%; overflow:auto; background:#CCC;border:1px solid #000;}
 #contenedorEnsamble3{width:99%;height:99%;background:#FFF;border:1px solid #000;margin:3px auto 0 auto;}
 #barraOpcionesEnsamble{height:33px;padding:5px;background:#f0f0f0;border:1px solid #CCC;}
-.opcionesEnsamble{border:1px solid #000;background:#FFF;height:20px;padding:5px;width:auto;text-align:center;float:left;margin-left:3px;font-size: 12px;}
+.opcionesEnsamble{border:1px solid #000;background:#FFF;height:20px;padding:5px;width:100px;text-align:center;float:left;margin-left:3px;font-size: 12px;}
 .opcionesEnsamble:hover{background:#e1e1e1;cursor:pointer;}
 .ventanaEnsambleContenido{background:#fff;border:1px solid #CCC;overflow:auto;width:82%; float:left;}
 #barraInferiorEnsamble{height:33px;padding:5px;background:#f0f0f0;border:1px solid #CCC;}
