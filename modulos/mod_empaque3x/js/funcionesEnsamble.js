@@ -536,19 +536,3 @@ function verificaEquiposMarcados(idValidaciones){
 	//alert(idValidaciones);
 	ajaxApp("detalleEmpaque","controladorEnsamble.php","action=verificarEquiposMarcados&idValidaciones="+idValidaciones,"POST");
 }
-function mostrarFormBounce(){
-	$("#opcionFormBounce").show();
-	//formBounceReemplazo
-	ajaxApp("formBounceReemplazo","controladorEnsamble.php","action=mostrarFromBounce","POST");
-}
-function buscarImeiParaBounce(evento){
-	if(evento.which==13){
-		var imeiBounce=$("#txtImeiBounce").val();
-		if(imeiBounce=="" || imeiBounce==null || imeiBounce.length<15){
-			alert("Error: Verifique la informacion");
-		}else{
-			//alert("Buscar")
-			ajaxApp("divDetalleFormBounce","controladorEnsamble.php","action=mostrarDetalleCambio&imei="+imeiBounce,"POST");
-		}
-	}
-}

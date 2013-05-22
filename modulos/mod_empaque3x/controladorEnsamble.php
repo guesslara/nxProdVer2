@@ -119,18 +119,6 @@
 			$objModelo2=new modeloEnsamble2();
 			$objModelo2->mostrarInformacionEntregas($_POST["idEntrega"]);
 		break;
-		case "mostrarFromBounce":
-			//print_r($_POST);
-			include("cambioBounce.php");
-			$objBounce=new modeloBounce();
-			$objBounce->mostrarFormularioCambio();
-		break;
-		case "mostrarDetalleCambio":
-			//print_r($_POST);
-			include("cambioBounce.php");
-			$objBounce=new modeloBounce();
-			$objBounce->mostrarResumenImei($_POST["imei"]);
-		break;
 		case "exportarValidacion":
 ?>
 			<script type="text/javascript">
