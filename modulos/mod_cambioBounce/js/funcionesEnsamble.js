@@ -42,12 +42,13 @@ function cambiarEvento(evento,idSerial){
 	}
 }
 function guardarReemplazo(){
+	var tipoCambio=$("#cboTipoCambio").val();
 	var imeiProceso=$("#txtImeiBusquedaBounce").val();
 	var imeiBounce=$("#txtImeiBounce").val();
 	var serialBounce=$("#txtSerialBounce").val();
-	if(imeiProceso=="" || imeiBounce=="" || imeiProceso==null || imeiBounce==null || imeiProceso.length<15 || imeiBounce.length<15 || serialBounce=="" || serialBounce==null || serialBounce.length<10 || serialBounce>10){
+	if(tipoCambio=="" || imeiProceso=="" || imeiBounce=="" || imeiProceso==null || imeiBounce==null || imeiProceso.length<15 || imeiBounce.length<15 || serialBounce=="" || serialBounce==null || serialBounce.length<10 || serialBounce>10){
 		alert("Verifique la informacion del IMEI o el Numero de Serie");
 	}else{
-		ajaxApp("divDetalleGuardado","controladorEnsamble.php","action=guardarDetalle&imeiProceso="+imeiProceso+"&imeiBounce="+imeiBounce+"&serialBounce="+serialBounce,"POST");
+		ajaxApp("divDetalleGuardado","controladorEnsamble.php","action=guardarDetalle&imeiProceso="+imeiProceso+"&imeiBounce="+imeiBounce+"&serialBounce="+serialBounce+"&tipoCambio="+tipoCambio,"POST");
 	}
 }

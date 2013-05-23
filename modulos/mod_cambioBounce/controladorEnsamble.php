@@ -11,7 +11,7 @@
 		break;
 		case "guardarDetalle":
 			//print_r($_POST);
-			$objEnsamble->guardarReemplazo($_POST["imeiProceso"],$_POST["imeiBounce"],$_POST["serialBounce"]);
+			$objEnsamble->guardarReemplazo($_POST["imeiProceso"],$_POST["imeiBounce"],$_POST["serialBounce"],$_POST["tipoCambio"]);
 		break;
 	}
 ?>
