@@ -18,7 +18,7 @@
 			$sql="SELECT id_radio FROM equipos WHERE imei='".$imei."'";
 			$res=mysql_query($sql,$this->conectarBd());
 			$row=mysql_fetch_array($res);
-			$sql="INSERT INTO reemplazosBounce (id_radio,imei,serial,tipoCambio) VALUES ('".$row["id_radio"]."','".$imeiB."','".$serialB."','".$tipoCambio."','".date("Y-m-d")."','".date("H:i:s")."')";
+			$sql="INSERT INTO reemplazosBounce (id_radio,imei,serial,tipoCambio,fecha,hora) VALUES ('".$row["id_radio"]."','".$imeiB."','".$serialB."','".$tipoCambio."','".date("Y-m-d")."','".date("H:i:s")."')";
 			$res=mysql_query($sql,$this->conectarBd());
 			if($res){
 				if($tipoCambio=="reemplazoBounce"){

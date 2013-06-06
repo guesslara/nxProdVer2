@@ -84,7 +84,7 @@
 					$rowPrevio=mysql_fetch_array($resPrevio);
 					echo "<div class='divNoReg'>Registros encontrados: ".$regsEncontrados."</div>";
 					//consulta para la bitacora
-					$sqlBitacora="SELECT id_detalle, id_radio, f_registro, h_registro, descripcion, nombre, apaterno FROM (detalle_ing INNER JOIN cat_procesos ON detalle_ing.id_proc = cat_procesos.id_proc) INNER JOIN userdbnextel ON detalle_ing.id_personal = userdbnextel.ID where id_radio='".$rowEquipos['id_radio']."'";
+					$sqlBitacora="SELECT id_detalle, id_radio, f_registro, h_registro, descripcion, nombre, apaterno FROM (detalle_ing INNER JOIN cat_procesos ON detalle_ing.id_proc = cat_procesos.id_proc) INNER JOIN usuariosControl ON detalle_ing.id_personal = usuariosControl.ID where id_radio='".$rowEquipos['id_radio']."'";
 					$resBitacora=mysql_query($sqlBitacora,$this->conectarBd());
 					//$rowBitacora=mysql_fetch_array($resBitacora);
 					if(mysql_num_rows($resEquipos) != 0){
