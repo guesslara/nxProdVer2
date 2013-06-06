@@ -32,10 +32,16 @@
         }
         
         private function estilosReporteTabla(){
-            
+	    echo "<style type='text/css'>
+	    .estiloTitulosColumnas{height: 20px;padding: 5px;border:1px solid #CCC;background:#F0F0F0;font-weight:bold;}
+	    .estiloResultados{height:25px;padding: 5px;border-bottom:1px solid #CCC; width:auto;font-size: 10px;text-align: center;}
+	    .tituloReporte{border: 1px solid #CCC;background-color:#F0F0F0; height:20px; padding: 5px; width:auto; margin:4px;font-weight: bold;font-size: 12px;}
+	    .paginadorGrid{border: 0px solid #FF0000;text-align:center; height:20px;font-size: 12px; padding:5px;}
+	    </style>";   
         }
         
         public function mostrarListado($camposTitulo,$fecha1,$fecha2,$campos,$campoOrden,$tipoOrden,$condiciones,$regsxpagina,$from,$where,$titulosReporte,$pag,$arrayGet){
+	    $this->estilosReporteTabla();
 	    $url=$_SERVER["PHP_SELF"];
             //set_time_limit(0);
 	    $this->arrayParametros=$arrayGet;	    
@@ -81,10 +87,10 @@
             // si hay residuo usamos funcion floor para que me devuelva la parte entera, SIN REDONDEAR, y le sumamos una unidad para obtener la ultima pagina
             if($Res>0) $PagUlt=floor($PagUlt)+1;			
 ?>
-		<div style="border: 1px solid #CCC;background-color:#F0F0F0; height:20px; padding: 5px; width:auto; margin:4px;font-weight: bold;font-size: 12px;">
+		<div class="tituloReporte">
                     <strong><?=$titulosReporte;?></strong><br />                    
 		</div>
-                <div style="border: 0px solid #FF0000;text-align:center; height:20px;font-size: 12px; padding:5px;">
+                <div class="paginadorGrid">
 		    <div style="float: left;width: 20px;height: 15px;border: 1px solid #CCC;padding: 2px;"><a href="<?=$url;?>?pagina=1&action=resultados&parametros=<?=$parametrosPaginador;?>" title="Primero" style="cursor:pointer; text-decoration:none;">|&lt;</a>&nbsp;</div>
 <?
 		if($PagAct>1){ 
@@ -111,14 +117,14 @@
 				//valores de las columnas
 				for($i=0;$i<($totalCampos+1);$i++){
 ?>
-                                <td align="center" style="height: 20px;padding: 5px;border:1px solid #CCC;background:#F0F0F0;"><strong><?=$camposTitulo[$i];?></strong></td>
+                                <td align="center" class="estiloTitulosColumnas"><?=$camposTitulo[$i];?></td>
 <?
 				}
 ?>
 			    </tr>
 			    <tr>
 <?
-                                    $color="#CCCCCC";//background-Color:<?=$color;>;
+                                    $color="#CCCCCC";
                                     $i=0;
                                     while($row=mysql_fetch_array($resultadoNueva)){					
 ?>
@@ -127,7 +133,7 @@
                                         for($j=0;$j<=$totalCampos;$j++){					  
                                             ($campoOrden==$campos[$j]) ? $borde1="border:1px solid #09F;" : $borde1="";					  
 ?>
-				<td style="height:25px;padding: 5px;border-bottom:1px solid #CCC; width:auto;<?=$borde1;?>" style="font-size: 10px;text-align: center;">
+				<td class="estiloResultados" style="<?=$borde1;?>">
 <?
                                             echo $row[$j];
 ?>		

@@ -36,7 +36,7 @@ function resumen(mes,anio,diaActual){
 }
 function resumenStatus(mes,anio,diaActual){
 	$("#btnOpcionesInicioSub").html("");
-	div="resumen";
+	div="listadoEmpaque";
 	url="controlador.php";
 	parametros="action=resumenStatus&mes="+mes+"&anio="+anio+"&diaActual="+diaActual;
 	metodo="GET";
@@ -64,7 +64,7 @@ function cerrarDiv(div){
 	$("#"+div).hide();
 }
 function mostrarLotes(){
-	ajaxApp("resumen","controlador.php","action=mostrarLotes","POST");
+	ajaxApp("listadoEmpaque","controlador.php","action=mostrarLotes","POST");
 }
 function verDetalleLote(lote,div){
 	ajaxApp(div,"controlador.php","action=verLote&lote="+lote,"POST");

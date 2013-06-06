@@ -73,8 +73,8 @@ html,body,document{position:absolute;margin:0px;height:100%; width:100%; margin:
 	<div id="contenedorEnsamble3">
 		<div id="barraOpcionesEnsamble">						
 			<div class="opcionesEnsamble" onclick="resumen('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>')" title="Resumen del Sistema">Resumen</div>
-			<!--<div class="opcionesEnsamble" onclick="resumenStatus('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>')" title="Resumen por Proceso">Resumen Proceso</div>
-			<div class="opcionesEnsamble" onclick="enviarAValidar()" title="Capturar SCRAP">Enviado por Folio</div>-->
+			<div class="opcionesEnsamble" onclick="resumenStatus('<?=$mes;?>','<?=$anio;?>','<?=$diaActual;?>')" title="Resumen por Proceso">Resumen Proceso</div>
+			<div class="opcionesEnsamble" onclick="mostrarLotes()" title="Capturar SCRAP">Folios</div>
 			<div style="float:right;width:200px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:14px;text-align:left;">Inicio</div>
 		</div>
 		<div id="infoEnsamble3">			

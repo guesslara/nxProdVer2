@@ -242,54 +242,17 @@
 	    $fecha2=$anio."-".$mes."-".$totalDias;
 	    $sqlTotalEquipos="SELECT COUNT( * ) AS `Filas` , `statusProceso` FROM `equipos` GROUP BY `statusProceso` ORDER BY `statusProceso` ";
 	    $resTotalEquipos=mysql_query($sqlTotalEquipos,$this->conexionBd());
+	    $i=0;
+	    $cuentaTotalResumenProceso=0;
+	    while($rowTotalEquipos=mysql_fetch_array($resTotalEquipos)){
+		  $idDiv="divDetalle".$i;
+		  $cuentaTotalResumenProceso+=$rowTotalEquipos["Filas"];
 ?>
-	    <script>
-		  $(function(){
-			$('table').visualize({type: 'pie', height: '250px', width: '250px',parseDirection:'x',appendTitle:false,appendKey:true,pieMargin:30,pieLabelPos:'inside',yLabelInterval:40,lineWeight:6,barMargin: 5,colors:['#be1e2d','#666699','#92d5ea','#ee8310','#8d10ee','#5a3b16','#26a4ed','#f45a90','#e9e744','#969DFE','#BCFE96','#FF6262','#9C8FA6']});
-		  });  
-	    </script>
-	    <table border="0" width="98%" cellpadding="1" cellspacing="1" style="margin:4px;">
-		  <caption>Resumen por Proceso</caption>		     
-			<thead>
-			      <tr>
-				    <td></td>
-				    <th scope="col">Total</th>				      
-			      </tr>
-			</thead>
-		  <tbody>
-<?
-		$i=0;
-		$cuentaTotalResumenProceso=0;
-		while($rowTotalEquipos=mysql_fetch_array($resTotalEquipos)){
-			$idDiv="divDetalle".$i;
-			$cuentaTotalResumenProceso+=$rowTotalEquipos["Filas"];
-?>
-			<!--<tr>
-		         	<td width="49%" style="height:25px;border:1px solid #999; background:#ccc; text-align:left;"><?=$rowTotalEquipos['statusProceso'];?>: </td>
-			        <td width="9%" style="height:25px;border:1px solid #999; background:#ccc; text-align:center;"><a href="#" style="text-decoration:none;color:blue;" title="Detalle por modelo" onclick="verResumenStatusProceso('<?=$rowTotalEquipos['statusProceso'];?>','<?=$idDiv;?>')">[ + ]</a></td>
-				<td width="42%" style="height:25px; border:1px solid #CCC; text-align:right;"><a href="#" style="text-decoration:none;color:blue;" onclick="verResumen('<?=$rowTotalEquipos['statusProceso'];?>','S/M','proceso')"><?=$rowTotalEquipos['Filas'];?></a>&nbsp;</td>                
-		        </tr>
-			<tr>
-				<td colspan="5"><div id="<?=$idDiv;?>" style="background:#f0f0f0;"></div></td>
-			</tr>-->
-			<tr>
-			      <th scope="row" style="text-align: left;height: 15px;padding: 4px;"><?=$rowTotalEquipos['statusProceso'];?> </th>			    
-			      <td><?=$rowTotalEquipos['Filas'];?></td>
-			</tr>
-			<!--<tr>
-			      <td colspan="5"><div id="<?=$idDiv;?>" style="background:#f0f0f0;"></div></td>
-			</tr>-->
+
+		  <div class="btnOpcionesInicioSubBoton"><?=$rowTotalEquipos['statusProceso'];?><div style='float:right;'><a href='#' onclick="verResumen('<?=$status?>','S/M','status')" style='color:blue;'><?=$rowTotalEquipos['Filas'];?></a></div></div>
 <?		
-			$i+=1;
-		}
-?>			
-		  <!--<tr>
-			<td colspan="2" style="height:25px;border:1px solid #999; background:#ccc; text-align:left; font-weight:bold;font-size:14px;">Total</td>
-			<td style="height:25px; border:1px solid #CCC; text-align:right; font-weight:bold;font-size:14px;"><?=$cuentaTotalResumenProceso;?></td>
-		  </tr>-->
-		  </tbody>
-	    </table>
-<?		
+		  $i+=1;
+	    }
 	}
 	
 	public function verResumenLoteModelo($lote,$modelo){
@@ -336,42 +299,42 @@
 		}
 	}
 	
-	public function mostrarLotesDetalle($lote){
-		$sqlLote="SELECT COUNT(*) AS `Filas`, modelo,equipos.id_modelo as idModelo FROM equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo WHERE lote='".$lote."' GROUP BY equipos.id_modelo ORDER BY equipos.id_modelo";
-		$resLote=mysql_query($sqlLote,$this->conexionBd());
-		if(mysql_num_rows($resLote)==0){
+	    public function mostrarLotesDetalle($lote){
+		  $sqlLote="SELECT COUNT(*) AS `Filas`, modelo,equipos.id_modelo as idModelo FROM equipos inner join cat_modradio on equipos.id_modelo=cat_modradio.id_modelo WHERE lote='".$lote."' GROUP BY equipos.id_modelo ORDER BY equipos.id_modelo";
+		  $resLote=mysql_query($sqlLote,$this->conexionBd());
+		  if(mysql_num_rows($resLote)==0){
 			echo "Sin resultados.";
-		}else{
+		  }else{
 			$sqlTotal="SELECT count( * ) as total FROM equipos WHERE lote = '".$lote."' ";
 			$resTotal=mysql_query($sqlTotal,$this->conexionBd());
 			$rowTotal=mysql_fetch_array($resTotal);
 ?>
 			<table width="241" border="0" cellpadding="0" cellspacing="0" style="margin-left:30px; font-size:10px; background:#FFF;">
-            	<tr>
-                	<td width="85" style="height:25px; padding:5px;background:#000; color:#FFF; text-align:center;">Modelo</td>
-                    <td width="81" style="height:25px; padding:5px;background:#000; color:#FFF; text-align:center;">Filas</td>
-                    <td width="75" style="height:25px; padding:5px;background:#000; color:#FFF; text-align:center;">&nbsp;</td>
-                </tr>
+			      <tr>
+				<td width="85" style="height:25px; padding:5px;background:#CCC; color:#000; text-align:center;">Modelo</td>
+				<td width="81" style="height:25px; padding:5px;background:#CCC; color:#000; text-align:center;">Filas</td>
+				<td width="75" style="height:25px; padding:5px;background:#CCC; color:#000; text-align:center;">&nbsp;</td>
+			      </tr>
 <?
 			while($rowLote=mysql_fetch_array($resLote)){
 ?>
-				<tr>
-                	<td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><?=$rowLote['modelo'];?></td>
-                    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><?=$rowLote['Filas'];?></td>
-                    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><a href="#" style="text-decoration:none;color:blue;" onclick="verResumenLoteModelo('<?=$lote;?>','<?=$rowLote['idModelo'];?>')" title="Ver Resumen" style="color:#06F;">Resumen</a></td>
-                </tr>
+			      <tr>
+				    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><?=$rowLote['modelo'];?></td>
+				    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><?=$rowLote['Filas'];?></td>
+				    <td style="height:25px; padding:5px; border-bottom:1px solid #999; text-align:center;"><a href="#" style="text-decoration:none;color:blue;" onclick="verResumenLoteModelo('<?=$lote;?>','<?=$rowLote['idModelo'];?>')" title="Ver Resumen" style="color:#06F;">Resumen</a></td>
+			      </tr>
 <?			
 			}
 ?>
-            	<tr>
-					<td width="85" style="background:#CCCCCC; color:#000000; border-bottom:1px solid #000000; text-align:center; height:25px; font-weight:bold;">Total</td>
-					<td width="81" style="background:#CCCCCC; color:#000000; border-bottom:1px solid #000000; text-align:center; height:25px; font-weight:bold; font-size:14px;"><?=$rowTotal['total'];?></td>
-                    <td style="background:#CCCCCC; color:#000000; border-bottom:1px solid #000000; text-align:center; height:25px; font-weight:bold; font-size:14px;">&nbsp;</td>
-				</tr>
-            </table>
+			      <tr>
+				    <td width="85" style="background:#CCCCCC; color:#000000; border-bottom:1px solid #000000; text-align:center; height:25px; font-weight:bold;">Total</td>
+				    <td width="81" style="background:#CCCCCC; color:#000000; border-bottom:1px solid #000000; text-align:center; height:25px; font-weight:bold; font-size:14px;"><?=$rowTotal['total'];?></td>
+				    <td style="background:#CCCCCC; color:#000000; border-bottom:1px solid #000000; text-align:center; height:25px; font-weight:bold; font-size:14px;">&nbsp;</td>
+			      </tr>
+			</table>
 <?			
-		}
-	}
+		  }
+	    }
 
 	public function mostrarLotes(){
 		$sqlLote="SELECT COUNT( * ) AS `Filas` , `lote` FROM `equipos` GROUP BY `lote` ORDER BY `lote` DESC";
@@ -380,20 +343,20 @@
 			echo "<br>Sin Resultados.";
 		}else{
 ?>
-			<div style=" margin:10px;background:#f0f0f0; border:1px solid #CCC;">
-            	<div style="margin:10px; font-weight:bold; font-size:12px;">Lotes en el sistema:</div>
+			<div style=" margin:10px;background:#fff; border:1px solid #CCC;">
+			      <div style="margin:10px; font-weight:bold; font-size:12px;">Lotes en el sistema:</div>
 <?
 				$i=0;
-				while($rowLote=mysql_fetch_array($resLote)){
-					$nombreDiv="div".$i;
+			while($rowLote=mysql_fetch_array($resLote)){
+			      $nombreDiv="div".$i;
 ?>
-            		<p style="margin:10px; font-size:10px; font-weight:bold;">&raquo;&raquo;<a href="#" style="text-decoration:none;color:blue;" title="Ver Resumen del Lote" onclick="verDetalleLote('<?=$rowLote['lote']?>','<?=$nombreDiv;?>')" style="color:#06F;"> <?=$rowLote['lote']?> </a></p>
-                    <div id="<?=$nombreDiv;?>" style="display:none;"></div>
+			      <p style="margin:10px; font-size:10px; font-weight:bold;">&raquo;&raquo;<a href="#" style="text-decoration:none;color:#333;" title="Ver Resumen del Lote" onclick="verDetalleLote('<?=$rowLote['lote']?>','<?=$nombreDiv;?>')" style="color:#06F;"> <?=$rowLote['lote']?> </a></p>
+			      <div id="<?=$nombreDiv;?>" style="display:none;"></div>
 <?
-					$i+=1;
-				}
+			      $i+=1;
+			}
 ?>
-            </div>
+			</div>
 <?			
 		}
 	}
