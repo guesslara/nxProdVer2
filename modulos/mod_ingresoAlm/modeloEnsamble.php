@@ -46,7 +46,7 @@
 					}else{
 						echo "<br> -> Registro No Actualizado";
 					}
-				}else if($filtro=="Scrap"){
+				}else if($filtro=="Scrap"){					
 					//se verifica que el equipo este marcado como Scrap
 					$sqlEsScrap="select status from equipos where imei='".$equipos[$i]."'";
 					$resEsScrap=mysql_query($sqlEsScrap,$this->conectarBd());

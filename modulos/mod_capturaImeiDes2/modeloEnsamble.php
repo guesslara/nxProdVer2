@@ -53,34 +53,44 @@
 						$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
 						return;	
 					}else{
-						$sqlRadio="SELECT id_radio,status,statusProceso FROM equipos WHERE imei='".$valores."'";
-						$resRadio=mysql_query($sqlRadio,$this->conectarBd());
-						$rowRadio=mysql_fetch_array($resRadio);
-						$id_Radio=$rowRadio['id_radio'];
-						if($rowRadio['statusProceso']=="Recibo"){
-							$sqlActEquipo="UPDATE equipos set statusProceso='Desensamble' where imei='".$valores."'";
-							$resActEquipo=mysql_query($sqlActEquipo,$this->conectarBd());
-							if($resActEquipo){
-								$msgCaja="Equipo Actualizado";
-								$color="green";
-								$fuente="white";
-								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
-								$objFunciones->guardaDetalleSistema($proceso,$usrAsignaDesensamble,$valores);
-								echo "<script type='text/javascript'> contarEquiposAsigDes(); </script>";
-								return;
-							}else{
-								$msgCaja="Error al Actualizar";
-								$color="orange";
-								$fuente="white";
-								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
-								return;	
-							}
-						}else{
-							$msgCaja="Imei en otro Proceso";
+						$scrapPorEnviar=$objFunciones->buscarImeiScrapPorEntregar($valores);
+						
+						if($scrapPorEnviar==1){
+							$msgCaja="SCRAP POR ENVIAR";
 							$color="red";
 							$fuente="white";
 							$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
 							return;
+						}else{						
+							$sqlRadio="SELECT id_radio,status,statusProceso FROM equipos WHERE imei='".$valores."'";
+							$resRadio=mysql_query($sqlRadio,$this->conectarBd());
+							$rowRadio=mysql_fetch_array($resRadio);
+							$id_Radio=$rowRadio['id_radio'];
+							if($rowRadio['statusProceso']=="Recibo"){
+								$sqlActEquipo="UPDATE equipos set statusProceso='Desensamble' where imei='".$valores."'";
+								$resActEquipo=mysql_query($sqlActEquipo,$this->conectarBd());
+								if($resActEquipo){
+									$msgCaja="Equipo Actualizado";
+									$color="green";
+									$fuente="white";
+									$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+									$objFunciones->guardaDetalleSistema($proceso,$usrAsignaDesensamble,$valores);
+									echo "<script type='text/javascript'> contarEquiposAsigDes(); </script>";
+									return;
+								}else{
+									$msgCaja="Error al Actualizar";
+									$color="orange";
+									$fuente="white";
+									$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+									return;	
+								}
+							}else{
+								$msgCaja="Imei en otro Proceso";
+								$color="red";
+								$fuente="white";
+								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+								return;
+							}
 						}
 					}
 				}

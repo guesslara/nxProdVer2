@@ -36,8 +36,12 @@
 				$sqlC="select statusDesensamble from equipos where imei='".$equipos[$i]."'";
 				$resC=mysql_query($sqlC,$this->conectarBd());
 				$rowC=mysql_fetch_array($resC);
-				//echo "Estatus Desensamble ".$rowC['statusDesensamble'];
-				//if($rowC['statusDesensamble']!=""){		
+				//se busca el imei como SCRAP POR ENVIAR
+				$scrapPorEnviar=$objFunciones->buscarImeiScrapPorEntregar($equipos[$i]);
+				
+				if($scrapPorEnviar==1){
+					echo "<br> -> Imei marcado como SCRAP POR ENVIAR";
+				}else{				
 					$sqlRadio="UPDATE equipos set statusAlmacen='Asignado',statusProceso='".$txtProcesoAsig."' WHERE imei='".$equipos[$i]."'";
 					$resRadio=mysql_query($sqlRadio,$this->conectarBd());
 					if($resRadio){
@@ -45,16 +49,11 @@
 					}else{
 						echo "<br> -> Registro No Actualizado";
 					}				
-				/*}else{
-					echo "<br>Verifique la informaci&oacute;n del equipo con imei <strong>(".$equipos[$i].")</strong>.<br>";
-				}*/
-				$id_Radio=$rowRadio['id_radio'];
-				/*
-				$sql_insert1="INSERT INTO detalle_ing (id_proc,id_personal,id_radio,status,id_falla,f_registro,h_registro,observaciones)";
-				$sql_insert2=" VALUES('".$proceso."','".$usuarioEnsamble."','','Ok','0','".date("Y-m-d")."','".date("H:i:s")."','---')";
-				echo "<br>".$sqlEnsamble=$sql_insert1.$sql_insert2;
-				*/
-				$objFunciones->guardaDetalleSistema($proceso,$usuarioEnsamble,$equipos[$i]);
+				
+					$id_Radio=$rowRadio['id_radio'];
+				
+					$objFunciones->guardaDetalleSistema($proceso,$usuarioEnsamble,$equipos[$i]);
+				}
 			}
 ?>
 			<script type="text/javascript"> resetForm(); </script>

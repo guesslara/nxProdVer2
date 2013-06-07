@@ -32,7 +32,8 @@
 			$estaEnviado=$objEquipo->buscarImeiEnviado($txtImeiWip2);
 			$esNoEnviar=$objEquipo->buscarNoEnviar($txtImeiWip2);
 			$estaEnBd=$objEquipo->buscarImei($txtImeiWip2);			
-			$esScrap=$objEquipo->buscarImeiScrap($txtImeiWip2);						
+			$esScrap=$objEquipo->buscarImeiScrap($txtImeiWip2);
+			$scrapPorEntregar=$objEquipo->buscarImeiScrapPorEntregar($txtImeiWip2);
 			if($estaEnBd==0){
 				$msgCaja="EQUIPO NO EXISTE";
 				$color="red";
@@ -50,6 +51,10 @@
 				//return;
 			}else if($esScrap==1){
 				$msgCaja="Equipo marcado como Scrap";
+				$color="red";
+				$fuente="white";
+			}else if($scrapPorEntregar==1){
+				$msgCaja="SCRAP POR ENTREGAR";
 				$color="red";
 				$fuente="white";
 			}else{

@@ -27,6 +27,7 @@
 			$existe=$objDetalle->buscarImei($valores);
 			$estaEnviado=$objDetalle->buscarImeiEnviadoProceso($valores);
 			$noEnviar=$objDetalle->buscarNoEnviar($valores);
+			$scrapPorEnviar=$objDetalle->buscarImeiScrapPorEntregar($valores);
 			if($existe==0){
 				$msgCaja="Imei NO EXISTE";
 				$color="red";
@@ -41,6 +42,12 @@
 				return;	
 			}else if($noEnviar==1){
 				$msgCaja="Equipo NO ENVIAR";
+				$color="red";
+				$fuente="white";
+				$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+				return;
+			}else if($scrapPorEnviar==1){
+				$msgCaja="SCRAP POR ENVIAR";
 				$color="red";
 				$fuente="white";
 				$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
