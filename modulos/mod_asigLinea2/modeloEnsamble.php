@@ -66,38 +66,49 @@
 						$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
 						return;	
 					}else{
-						//se verifica si el equipo proviene de desensamble
-						$sqlC="select statusDesensamble,statusDiagnostico,statusAlmacen from equipos where imei='".$valores."'";
-						$resC=mysql_query($sqlC,$this->conectarBd());
-						$rowC=mysql_fetch_array($resC);
-						//echo "Estatus Desensamble ".$rowC['statusDesensamble'];
-						if($rowC['statusDesensamble']=="OK" && $rowC['statusDiagnostico']=="OK" && $rowC['statusDiagnostico']!="SCRAP" && $rowC['statusAlmacen']=="Almacenado"){		
-							$sqlRadio="UPDATE equipos set statusAlmacen='Asignado',statusProceso='Ingenieria' WHERE imei='".$valores."'";					
-							$resRadio=mysql_query($sqlRadio,$this->conectarBd());
-							if($resRadio){
-								echo "<br> -> Registro Actualizado";
-								$msgCaja="Equipo Actualizado";
-								$color="green";
-								$fuente="white";
-								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
-								//se inserta el detalle para el seguimiento del equipo
-								$objFunciones->guardaDetalleSistema($proceso,$usrAsigLinea,$valores);
-								echo "<script type='text/javascript'> contarEquiposAsigLinea(); </script>";
-							}else{
-								$msgCaja="Error al Actualizar";
-								$color="orange";
-								$fuente="white";
-								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
-								return;	
-							}				
-						}else{
-							//echo "<br>Verifique la informaci&oacute;n del equipo con imei <strong>(".$equipos[$i].")</strong>.<br>";
-							$msgCaja="Verifique la informacion";
+						$scrapPorEnviar=$objFunciones->buscarImeiScrapPorEntregar($valores);
+						
+						if($scrapPorEnviar==1){
+							$msgCaja="SCRAP POR ENVIAR";
 							$color="red";
 							$fuente="white";
 							$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
 							return;
-						}	
+						}else{						
+							//se verifica si el equipo proviene de desensamble
+							$sqlC="select statusDesensamble,statusDiagnostico,statusAlmacen from equipos where imei='".$valores."'";
+							$resC=mysql_query($sqlC,$this->conectarBd());
+							$rowC=mysql_fetch_array($resC);
+							//echo "Estatus Desensamble ".$rowC['statusDesensamble'];
+							if($rowC['statusDesensamble']=="OK" && $rowC['statusDiagnostico']=="OK" && $rowC['statusDiagnostico']!="SCRAP" && $rowC['statusAlmacen']=="Almacenado"){		
+								$sqlRadio="UPDATE equipos set statusAlmacen='Asignado',statusProceso='Ingenieria' WHERE imei='".$valores."'";					
+								$resRadio=mysql_query($sqlRadio,$this->conectarBd());
+								if($resRadio){
+									echo "<br> -> Registro Actualizado";
+									$msgCaja="Equipo Actualizado";
+									$color="green";
+									$fuente="white";
+									$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+									//se inserta el detalle para el seguimiento del equipo
+									$objFunciones->guardaDetalleSistema($proceso,$usrAsigLinea,$valores);
+									echo "<script type='text/javascript'> contarEquiposAsigLinea(); </script>";
+								}else{
+									$msgCaja="Error al Actualizar";
+									$color="orange";
+									$fuente="white";
+									$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+									return;	
+								}				
+							}else{
+								//echo "<br>Verifique la informaci&oacute;n del equipo con imei <strong>(".$equipos[$i].")</strong>.<br>";
+								$msgCaja="Verifique la informacion";
+								$color="red";
+								$fuente="white";
+								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+								return;
+							}
+						
+						}
 					}
 				}
 			}

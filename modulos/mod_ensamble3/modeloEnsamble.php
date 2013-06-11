@@ -70,73 +70,81 @@
 						$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
 						return;
 					}else{
-						//se extrae la info del radio
-						$sqlRadio="select * from equipos where imei='".$equipos[0]."'";
-						$resRadio=mysql_query($sqlRadio,$this->conectarBd());
-						$rowRadio=mysql_fetch_array($resRadio);
-						//primera validacion que el imei no este marcado como enviado
-						if($rowRadio["status"]=="ENVIADO"){								
-							$msgCaja="Imei ENVIADO";
+						$scrapPorEnviar=$objFunciones->buscarImeiScrapPorEntregar($equipos[0]);
+						if($scrapPorEnviar==1){
+							$msgCaja="SCRAP POR ENVIAR";
 							$color="red";
 							$fuente="white";
 							$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
-							return;
-						}else if($rowRadio["status"]=="WIP" && $rowRadio["statusProceso"]=="Empaque" && $rowRadio["statusIngenieria"]=="ING_OK"){
-							//si el equipo ya paso por ingenieria y se hizo una segunda pasada con el scanner								
-							$msgCaja="Equipo ya CLASIFICADO";
-							$color="orange";
-							$fuente="black";
-							$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
-							return;
-						}else{
-							//se valida que ninguno de los status este marcado en la base de datos
-							if($rowRadio["status"]=="WIP" && $rowRadio["statusProceso"]=="Desensamble" || $rowRadio["statusProceso"]=="Recibo" && $rowRadio["statusDesensamble"]=="N/A" && $rowRadio["statusDiagnostico"]=="N/A" && $rowRadio["statusAlmacen"]=="N/A" && $rowRadio["statusIngenieria"]=="N/A" && $rowRadio["statusEmpaque"]=="N/A"){
-								//se procede a la actualizacion del equipo rellenando los status faltantes
-								//$sqlUpdate="UPDATE equipos set status='SCRAP',statusProceso='Ingenieria',statusDesensamble='OK',statusDiagnostico='OK',statusAlmacen='Asignado',sim='".$equipos[1]."',statusIngenieria='SCRAP',lineaEnsamble='".$linea."' where imei='".$equipos[0]."'";
-								//SE MODIFICA EL QUERY PARA PODER PONER LOS EQUIPOS NE WIP2
-								$sqlUpdate="UPDATE equipos set status='WIP2',statusProceso='Ingenieria',statusDesensamble='OK',statusDiagnostico='OK',statusAlmacen='Asignado',sim='".$equipos[1]."',statusIngenieria='SCRAP',lineaEnsamble='".$linea."' where imei='".$equipos[0]."'";
-								$insertaControl="general";
-							}else if($rowRadio["status"]=="WIP" && $rowRadio["statusProceso"]=="Ingenieria"){
-								//si la primera condicion no se cumple entonces se actualiza solo es status que hace falta
-								//$sqlUpdate="UPDATE equipos set status='SCRAP',statusProceso='Ingenieria',statusIngenieria='SCRAP',lineaEnsamble='".$linea."' where imei='".$equipos[0]."'";
-								$sqlUpdate="UPDATE equipos set status='WIP2',statusProceso='Ingenieria',statusIngenieria='SCRAP',lineaEnsamble='".$linea."' where imei='".$equipos[0]."'";
-								$insertaControl="proceso";
-							}
-							//se valida que el equipo no este en NO_ENVIAR
-							$regsNoEnviar=$objFunciones->buscarNoEnviar($equipos[0]);
-							if($regsNoEnviar==0){
-								//echo "<br>".$sqlUpdate."<br>";
-								$resRadio=mysql_query($sqlUpdate,$this->conectarBd());
-								if($resRadio){										
-									$msgCaja="Equipo Actualizado";
-									$color="green";
-									$fuente="white";
-									$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
-									if($insertaControl=="proceso"){
-										//se inserta el detalle para el seguimiento del equipo										
-										$objFunciones->guardaDetalleSistema($proceso,$usrEnsamble,$equipos[0]);	
-									}else{
-										$objFunciones->guardaDetalleSistema(2,$usrEnsamble,$equipos[0]);
-										$objFunciones->guardaDetalleSistema(3,$usrEnsamble,$equipos[0]);
-										$objFunciones->guardaDetalleSistema(8,$usrEnsamble,$equipos[0]);
-										$objFunciones->guardaDetalleSistema(3,$usrEnsamble,$equipos[0]);
-										$objFunciones->guardaDetalleSistema(4,$usrEnsamble,$equipos[0]);
-									}
-									echo "<script type='text/javascript'> contarEquiposIng(); </script>";
-									return;
-								}else{									
-									$msgCaja="Error al Actualizar";
-									$color="orange";
-									$fuente="black";
-									$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
-								}
-							}else{
-								$msgCaja="Equipo NO ENVIAR";
+						}else{						
+							//se extrae la info del radio
+							$sqlRadio="select * from equipos where imei='".$equipos[0]."'";
+							$resRadio=mysql_query($sqlRadio,$this->conectarBd());
+							$rowRadio=mysql_fetch_array($resRadio);
+							//primera validacion que el imei no este marcado como enviado
+							if($rowRadio["status"]=="ENVIADO"){								
+								$msgCaja="Imei ENVIADO";
+								$color="red";
+								$fuente="white";
+								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+								return;
+							}else if($rowRadio["status"]=="WIP" && $rowRadio["statusProceso"]=="Empaque" && $rowRadio["statusIngenieria"]=="ING_OK"){
+								//si el equipo ya paso por ingenieria y se hizo una segunda pasada con el scanner								
+								$msgCaja="Equipo ya CLASIFICADO";
 								$color="orange";
 								$fuente="black";
-								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);									
+								$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+								return;
+							}else{
+								//se valida que ninguno de los status este marcado en la base de datos
+								if($rowRadio["status"]=="WIP" && $rowRadio["statusProceso"]=="Desensamble" || $rowRadio["statusProceso"]=="Recibo" && $rowRadio["statusDesensamble"]=="N/A" && $rowRadio["statusDiagnostico"]=="N/A" && $rowRadio["statusAlmacen"]=="N/A" && $rowRadio["statusIngenieria"]=="N/A" && $rowRadio["statusEmpaque"]=="N/A"){
+									//se procede a la actualizacion del equipo rellenando los status faltantes
+									//$sqlUpdate="UPDATE equipos set status='SCRAP',statusProceso='Ingenieria',statusDesensamble='OK',statusDiagnostico='OK',statusAlmacen='Asignado',sim='".$equipos[1]."',statusIngenieria='SCRAP',lineaEnsamble='".$linea."' where imei='".$equipos[0]."'";
+									//SE MODIFICA EL QUERY PARA PODER PONER LOS EQUIPOS NE WIP2
+									$sqlUpdate="UPDATE equipos set status='WIP2',statusProceso='Ingenieria',statusDesensamble='OK',statusDiagnostico='OK',statusAlmacen='Asignado',sim='".$equipos[1]."',statusIngenieria='SCRAP',lineaEnsamble='".$linea."' where imei='".$equipos[0]."'";
+									$insertaControl="general";
+								}else if($rowRadio["status"]=="WIP" && $rowRadio["statusProceso"]=="Ingenieria"){
+									//si la primera condicion no se cumple entonces se actualiza solo es status que hace falta
+									//$sqlUpdate="UPDATE equipos set status='SCRAP',statusProceso='Ingenieria',statusIngenieria='SCRAP',lineaEnsamble='".$linea."' where imei='".$equipos[0]."'";
+									$sqlUpdate="UPDATE equipos set status='WIP2',statusProceso='Ingenieria',statusIngenieria='SCRAP',lineaEnsamble='".$linea."' where imei='".$equipos[0]."'";
+									$insertaControl="proceso";
+								}
+								//se valida que el equipo no este en NO_ENVIAR
+								$regsNoEnviar=$objFunciones->buscarNoEnviar($equipos[0]);
+								if($regsNoEnviar==0){
+									//echo "<br>".$sqlUpdate."<br>";
+									$resRadio=mysql_query($sqlUpdate,$this->conectarBd());
+									if($resRadio){										
+										$msgCaja="Equipo Actualizado";
+										$color="green";
+										$fuente="white";
+										$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+										if($insertaControl=="proceso"){
+											//se inserta el detalle para el seguimiento del equipo										
+											$objFunciones->guardaDetalleSistema($proceso,$usrEnsamble,$equipos[0]);	
+										}else{
+											$objFunciones->guardaDetalleSistema(2,$usrEnsamble,$equipos[0]);
+											$objFunciones->guardaDetalleSistema(3,$usrEnsamble,$equipos[0]);
+											$objFunciones->guardaDetalleSistema(8,$usrEnsamble,$equipos[0]);
+											$objFunciones->guardaDetalleSistema(3,$usrEnsamble,$equipos[0]);
+											$objFunciones->guardaDetalleSistema(4,$usrEnsamble,$equipos[0]);
+										}
+										echo "<script type='text/javascript'> contarEquiposIng(); </script>";
+										return;
+									}else{									
+										$msgCaja="Error al Actualizar";
+										$color="orange";
+										$fuente="black";
+										$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);
+									}
+								}else{
+									$msgCaja="Equipo NO ENVIAR";
+									$color="orange";
+									$fuente="black";
+									$this->mensajesCaja($idElemento,$msgCaja,$color,$fuente);									
+								}
 							}
-						}
+						}	
 					}
 				}
 			}

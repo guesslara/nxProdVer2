@@ -6,6 +6,14 @@
 	include("conexion/conexion.php");
 	class funcionesComunes{
 		
+		public function buscarImeiScrapPorEntregar($imei){
+			$this->conexionBd();
+			$sqlImei="select * from equipos where imei='".$imei."' and status='SCRAP POR ENVIAR'";
+			$resImei=mysql_query($sqlImei,$this->conexion);
+			$noRegs=mysql_num_rows($resImei);
+			return $noRegs;
+		}//fin funcion
+		
 		public function buscarImeiVsModelo($imei,$modelo){
 			$this->conexionBd();
 			$sqlImei="select * from equipos where imei='".$imei."' and id_modelo ='".$modelo."'";
