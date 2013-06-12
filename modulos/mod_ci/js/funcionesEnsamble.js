@@ -18,37 +18,29 @@ function ajaxApp(divDestino,url,parametros,metodo){
 	error:function() { $("#"+divDestino).show().html('<center>Error: El servidor no responde. <br>Por favor intente mas tarde. </center>'); }
 	});
 }
-function nuevaReemplazo(){
-	ajaxApp("detalleEmpaque","controladorEnsamble.php","action=mostrarReemplazo","POST");
+function nuevoCI(){
+	ajaxApp("detalleEmpaque","controladorEnsamble.php","action=mostrarForm","POST");
 }
-function mostrarResumenImei(evento){
+function buscarImei(evento,cajaBusqueda){
 	if(evento.which==13){
-		var imei=$("#txtImeiBusquedaBounce").val();
-		if(imei=="" || imei==null || imei.length<15){
-			alert("Error: Verifique la informacion Introducida");
-		}else{
-			ajaxApp("detalleResumenImei","controladorEnsamble.php","action=mostrarResumen&imei="+imei,"POST");
-		}
-	}
-}
-function cambiarEvento(evento,idSerial){
-	if(evento.which==13){
-		if(idSerial=="txtSerialBounce"){
-			$("#txtSerialBounce").focus();	
-		}else if(idSerial=="btnGuardarReemplazo"){
-			$("#btnGuardarReemplazo").focus();
+		if(cajaBusqueda=="Donante"){
+			var imei=$("#txtImeiDonante").val(); //se recupera el imei y se busca en la base de datos
+			var div="divDonante";
+		}else if(cajaBusqueda=="Receptor"){
+			var imei=$("#txtImeiReceptor").val(); //se recupera el imei y se busca en la base de datos
+			var div="divReceptor";
 		}
 		
+		ajaxApp(div,"controladorEnsamble.php","action=buscarDonante&imei="+imei+"&div="+div,"POST");
 	}
 }
-function guardarReemplazo(){
-	var tipoCambio=$("#cboTipoCambio").val();
-	var imeiProceso=$("#txtImeiBusquedaBounce").val();
-	var imeiBounce=$("#txtImeiBounce").val();
-	var serialBounce=$("#txtSerialBounce").val();
-	if(tipoCambio=="" || imeiProceso=="" || imeiBounce=="" || imeiProceso==null || imeiBounce==null || imeiProceso.length<15 || imeiBounce.length<15 || serialBounce=="" || serialBounce==null || serialBounce.length<10 || serialBounce>10){
-		alert("Verifique la informacion del IMEI o el Numero de Serie");
-	}else{
-		ajaxApp("divDetalleGuardado","controladorEnsamble.php","action=guardarDetalle&imeiProceso="+imeiProceso+"&imeiBounce="+imeiBounce+"&serialBounce="+serialBounce+"&tipoCambio="+tipoCambio,"POST");
-	}
+function guardarCI(){
+	var usuario=$("#txtIdUsuarioEmpaque").val();
+	var imeiDonante=$("#txtIdRadioDonante").val();
+	var imeiReceptor=$("#txtIdRadioReceptor").val();
+	var observaciones=$("#txtObservaciones").val();
+	
+	//alert("Usuario "+usuario+"\n\nImei Donante "+imeiDonante+"\n\nImei Receptor "+imeiReceptor+"\n\nObservaciones "+observaciones);
+	parametros="action=guardarCI&usuario="+usuario+"&imeiDonante="+imeiDonante+"&imeiReceptor="+imeiReceptor+"&observaciones="+observaciones;
+	ajaxApp("divGuardadoCI","controladorEnsamble.php",parametros,"POST");
 }

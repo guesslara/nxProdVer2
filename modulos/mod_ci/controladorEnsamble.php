@@ -3,15 +3,15 @@
 	$objEnsamble=new modeloEnsamble();
 	//print_r($_POST);
 	switch($_POST['action']){
-		case "mostrarReemplazo":
+		case "mostrarForm":
 			$objEnsamble->mostrarForm();
 		break;
-		case "mostrarResumen":
-			$objEnsamble->mostrarResumen($_POST["imei"]);
+		case "buscarDonante":
+			$objEnsamble->mostrarResumen($_POST["imei"],$_POST["div"]);
 		break;
-		case "guardarDetalle":
+		case "guardarCI":
 			//print_r($_POST);
-			$objEnsamble->guardarReemplazo($_POST["imeiProceso"],$_POST["imeiBounce"],$_POST["serialBounce"],$_POST["tipoCambio"]);
+			$objEnsamble->guardarEquipoCI($_POST["usuario"],$_POST["imeiDonante"],$_POST["imeiReceptor"],$_POST["observaciones"]);
 		break;
 	}
 ?>

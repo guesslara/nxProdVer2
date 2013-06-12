@@ -89,7 +89,7 @@
 <div id="contenedorEnsamble">
 	<div id="contenedorEnsamble3">
 		<div id="barraOpcionesEnsamble">
-			<div class="opcionesEnsamble" onclick="nuevaReemplazo()" title="Capturar Reemplazo de Equipo">Capturar Reemplazo</div>
+			<div class="opcionesEnsamble" onclick="nuevoCI()" title="Capturar Reemplazo de Equipo">Capturar C.I.</div>
 			<!--<div class="opcionesEnsamble" onclick="enviarAValidar()" title="Enviar a Validar">Enviar a Validar</div>-->
 			<!--<div class="opcionesEnsambleFinalizar" onclick="generarVentana()" title="Finalizar Entregas">Finalizar Entregas</div>-->
 			<div id="cargadorEmpaque" style="float:right;width:200px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:13px;text-align:right;"></div>
