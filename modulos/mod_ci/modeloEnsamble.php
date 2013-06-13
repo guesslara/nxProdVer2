@@ -32,17 +32,24 @@
 				echo "( 0 ) registros encontrados.";
 			}else{
 				$row=mysql_fetch_array($res);
-				if($div=="divDonante"){
+				//se hace una búsqueda en la tabla CI para verificar el cambio
+				$sqlBuscaCI="SELECT * FROM equipos_ci WHERE id_radio_donante='".$row["id_radio"]."'";
+				$resBuscaCI=mysql_query($sqlBuscaCI,$this->conectarBd());
+				if(mysql_num_rows($resBuscaCI)!=0){
+					echo "<div style='background:#F5A9A9;border-top:1px solid #ff0000;border-bottom:1px solid #ff0000;'>Este equipo ya ha sido Procesado como C.I. verifique la información.</div>";	
+				}else{
+				
+					if($div=="divDonante"){
 ?>
 				<script type="text/javascript"> $("#txtImeiDonante").attr("value",""); $("#txtImeiDonante").focus(); </script>
 				<input type="hidden" name="txtIdRadioDonante" id="txtIdRadioDonante" value="<?=$row["id_radio"];?>">
 <?				
-				}else if($div=="divReceptor"){
+					}else if($div=="divReceptor"){
 ?>
 				<script type="text/javascript"> $("#txtImeiReceptor").attr("value",""); $("#txtImeiReceptor").focus(); </script>
 				<input type="hidden" name="txtIdRadioReceptor" id="txtIdRadioReceptor" value="<?=$row["id_radio"];?>">
 <?				
-				}				
+					}				
 ?>
 				<fieldset style="width: 340px;"><legend>Detalles:</legend>				
 				<table border="0" cellpadding="1" cellspacing="1" width="330">
@@ -65,6 +72,7 @@
 				</table>
 				</fieldset>
 <?				
+				}
 			}			
 		}
 		
@@ -73,14 +81,15 @@
 			<script type="text/javascript"> $("#txtImeiDonante").focus(); </script>
 			<br>			
 			<div id="divGuardadoCI"></div>
+			<div style="margin: 3px auto 3px auto;">
 			<table border="0" cellpadding="1" cellspacing="1" width="800" style="font-size: 12px;margin: 5px;">
 				<tr>
 					<td colspan="2" style="height: 25px;padding: 5px;background: #000;color: #FFF;">Cambio de Identidad de Equipos</td>
 				</tr>
 				<tr>
 					<td width="400" valign="top">
-						<div style="height: 20px;padding: 5px;border: 1px solid #CCC;background: #e1e1e1;">Imei Donante</div>
-						<div style="border: 1px solid #666;">
+						<div style="height: 20px;padding: 5px;border: 1px solid #CCC;background: #e1e1e1;">Imei 1</div>
+						<div style="border: 0px solid #666;">
 							<table width="97%" cellpadding="1" cellspacing="1">
 								<tr>
 									<td width="30%" style="text-align: left;">Imei Donante:</td>
@@ -88,15 +97,14 @@
 								</tr>
 								<tr>
 									<td colspan="2">										
-										<div id="divDonante" style="margin: 0px;height: auto;border:0px solid #CCC;">
-										</div>
+										<div id="divDonante" style="margin: 0px;height: auto;border:0px solid #CCC;">&nbsp;</div>
 									</td>
 								</tr>
 							</table>
 					</td>
 					<td width="400" valign="top">
-						<div style="height: 20px;padding: 5px;border: 1px solid #CCC;background: #e1e1e1;">Imei Receptor</div>
-						<div style="border: 1px solid #666;">
+						<div style="height: 20px;padding: 5px;border: 1px solid #CCC;background: #e1e1e1;">Imei 2</div>
+						<div style="border: 0px solid #666;">
 							<table width="97%" cellpadding="1" cellspacing="1">
 								<tr>
 									<td width="30%" style="text-align: left;">Imei Receptor:</td>
@@ -104,9 +112,7 @@
 								</tr>
 								<tr>
 									<td colspan="2">
-										<div id="divReceptor" style="margin: 0px;height:auto;border:0px solid #CCC;">
-												
-										</div>										
+										<div id="divReceptor" style="margin: 0px;height:auto;border:0px solid #CCC;">&nbsp;</div>										
 									</td>
 								</tr>
 								<tr>
@@ -123,12 +129,12 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: right;">
-						<input type="reset" value="Cancelar" style="height: 33px;padding: 5px;">
-						<input type="button" onclick="guardarCI()" value="Guardar C.I." style="height: 33px;padding: 5px;">
+						<input type="reset" value="Cancelar" style="height: 33px;padding: 5px;width: 120px;">
+						<input type="button" onclick="guardarCI()" value="Guardar C.I." style="height: 33px;padding: 5px;width: 120px;">
 					</td>
 				</tr>
 			</table>
-			
+			</div>
 			<div id="divDetalleGuardado"></div>
 <?
 		}
