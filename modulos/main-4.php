@@ -50,7 +50,7 @@
 	setInterval(vMantto,10000);
         setInterval(vActNuevas,10000);
 	setInterval(vActSistema,10000);
-	setInterval(vSesion,1500000);
+	//setInterval(vSesion,1500000);
 	window.onresize=contenedorPrincipal;
         function contenedorPrincipal(){
             var altoDoc=$("#contenedorAppMain").height();	    
