@@ -95,11 +95,20 @@ include("../../clases/conexion/conexion.php");
       }
       
       public function verFoliosResumen(){
-	    $sqlResFolio="SELECT * FROM folios_nextel ORDER BY folio_salida";
+	    $sqlResFolio="SELECT * FROM folios_nextel WHERE folio_salida='01176' ORDER BY folio_salida";
 	    $resFolio=mysql_query($sqlResFolio,$this->conexionBd());
 	    if(mysql_num_rows($resFolio)==0){
 		  echo "( 0 ) registros.";
 	    }else{
+	   /*
+aqui esta
+	   $statusTotal=array();
+	    $conCampos="SELECT status FROM equipos GROUP BY (status)";
+	    $exeCampos=myql_query($conCampos,$this->conexionBd());
+	    $cuantos=mysql_num_rows($exeCampos);
+	    for(var $i=0;$i<$cuantos;$i++){
+	    	array_push($statusTotal, )
+	    }*/
 ?>
 		  <table border="0" cellpadding="1" cellspacing="1" width="1000" style="font-size: 10px;">
 			<tr>
