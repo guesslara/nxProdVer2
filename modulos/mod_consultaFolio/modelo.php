@@ -95,25 +95,32 @@ include("../../clases/conexion/conexion.php");
       }
       
       public function verFoliosResumen(){
-	    $sqlResFolio="SELECT * FROM folios_nextel WHERE folio_salida='01176' ORDER BY folio_salida";
+	    $sqlResFolio="SELECT * FROM folios_nextel ORDER BY folio_salida";
 	    $resFolio=mysql_query($sqlResFolio,$this->conexionBd());
 	    if(mysql_num_rows($resFolio)==0){
 		  echo "( 0 ) registros.";
 	    }else{
-	   /*
-aqui esta
-	   $statusTotal=array();
+	   	$statusTotal=array();
 	    $conCampos="SELECT status FROM equipos GROUP BY (status)";
-	    $exeCampos=myql_query($conCampos,$this->conexionBd());
-	    $cuantos=mysql_num_rows($exeCampos);
-	    for(var $i=0;$i<$cuantos;$i++){
-	    	array_push($statusTotal, )
-	    }*/
+	    $exeCampos=mysql_query($conCampos,$this->conexionBd());
+	    $eq=0;
+	    while($rowstatus=mysql_fetch_array($exeCampos)){
+	    	array_push($statusTotal, $rowstatus['status']);
+	    	$eq+=1;
+	    }
+	    $conCamposEnviados="SELECT status FROM equipos_enviados GROUP BY (status)";
+	    $exeEnviados=mysql_query($conCamposEnviados,$this->conexionBd());
+	    while($rowStatusEnviados=mysql_fetch_array($exeEnviados)){
+	    	array_push($statusTotal, $rowStatusEnviados['status']);
+	    }
+	    $totalArrS=count($statusTotal);
+	    $t=$totalArrS+2;
+	    $t2=$totalArrS+11;
 ?>
-		  <table border="0" cellpadding="1" cellspacing="1" width="1000" style="font-size: 10px;">
+		  <table border="0" cellpadding="1" cellspacing="1" width="100%" style="font-size: 10px;">
 			<tr>
-			      <td colspan="7" class="titulosTablaInfo1">Info. NEXTEL</td>			      
-			      <td colspan="11" class="titulosTablaInfo2">Proceso IQ</td>			      
+			      <td colspan="8" class="titulosTablaInfo1">Info. NEXTEL</td>			      
+			      <td colspan="<?=$t?>" class="titulosTablaInfo2">Proceso IQ</td>			      
 			</tr>
 			<tr>
 			      <td class="titulosTablaResumen">&nbsp;</td>
@@ -124,15 +131,13 @@ aqui esta
 			      <td class="titulosTablaResumen">Fecha</td>
 			      <td class="titulosTablaResumen">Factura</td>
 			      <td class="titulosTablaResumen">Eq. Bd Enviada</td>
-			      <td class="titulosTablaResumen">Eq. WIP</td>
-			      <td class="titulosTablaResumen">Eq. WIP2</td>
-			      <td class="titulosTablaResumen">Eq. WIP3</td>
-			      <td class="titulosTablaResumen">Eq. SCRAP</td>
-			      <td class="titulosTablaResumen">Eq. ENVIADOS</td>
-			      <td class="titulosTablaResumen">Scrap. ENVIADO</td>
-			      <td class="titulosTablaResumen">RETENCION</td>
-			      <td class="titulosTablaResumen">RETENCION 2</td>
-			      <td class="titulosTablaResumen">VALIDANDO</td>
+			      <!--Apartir de aqui-->
+					<?
+					for($i=0;$i<$totalArrS;$i++){
+						?>
+						<td class="titulosTablaResumen"><?=$statusTotal[$i];?></td><?
+					}
+					?>	 
 			      <td class="titulosTablaResumen">TOTAL PROCESO</td>
 			      <td class="titulosTablaResumen"> + / - </td>
 			      <td class="titulosTablaResumen">D&iacute;as en IQ</td>
@@ -141,7 +146,9 @@ aqui esta
 <?
 		  $claseCss="listadoFoliosGrid1";	$i=0;
 		  $totalReporte=0; $totalSubido=0; $totalIqBd=0; $totalWip=0; $totalScrap=0; $totalScrapEnviado=0; $totalValidando=0; $totalEnviado=0; $totalmasmenos=0;
+		  $resulV=array();
 		  while($rowFolio=mysql_fetch_array($resFolio)){
+		  	$totalesXStatus=array();
 			 $sqlEq="select count(*) as totalBd from archivo_Cliente where lote='".$rowFolio["folio_salida"]."'";
 			 $resEq=mysql_query($sqlEq,$this->conexionBd());
 			 $rowEq=mysql_fetch_array($resEq);
@@ -152,95 +159,81 @@ aqui esta
 			      $msg="<span style='color:red;font-weight:bold;'>Verificar</span>";
 			 }
 			 //consultas a realizar
-			 $sqlWip="select count(*) as totalWip from equipos where lote = '".$rowFolio["folio_salida"]."' AND status = 'WIP'";
-			 $resWip=mysql_query($sqlWip,$this->conexionBd());
-			 $rowWip=mysql_fetch_array($resWip);
-			 
-			 $sqlWip2="select count(*) as totalWip2 from equipos where lote = '".$rowFolio["folio_salida"]."' AND status = 'WIP2'";
-			 $resWip2=mysql_query($sqlWip2,$this->conexionBd());
-			 $rowWip2=mysql_fetch_array($resWip2);
-			 
-			 $sqlWip3="select count(*) as totalWip3 from equipos where lote = '".$rowFolio["folio_salida"]."' AND status = 'WIP3'";
-			 $resWip3=mysql_query($sqlWip3,$this->conexionBd());
-			 $rowWip3=mysql_fetch_array($resWip3);
-			 
-			 $sqlScrap="select count(*) as totalScrap from equipos where lote = '".$rowFolio["folio_salida"]."' AND status IN ('SCRAP','SCRAP POR ENVIAR')";
-			 $resScrap=mysql_query($sqlScrap,$this->conexionBd());
-			 $rowScrap=mysql_fetch_array($resScrap);
-			 
-			 $sqlEnviado="select count(*) as totalEnviado from equipos_enviados where lote = '".$rowFolio["folio_salida"]."' AND status='ENVIADO'";
-			 $resEnviado=mysql_query($sqlEnviado,$this->conexionBd());
-			 $rowEnviado=mysql_fetch_array($resEnviado);
-			 
-			 $sqlScrapEnviado="select count(*) as totalScrapEnviado from equipos_enviados where lote = '".$rowFolio["folio_salida"]."' AND status='SCRAP ENVIADO'";
-			 $resScrapEnviado=mysql_query($sqlScrapEnviado,$this->conexionBd());
-			 $rowScrapEnviado=mysql_fetch_array($resScrapEnviado);
-			 
-			 $sqlRetencion="select count(*) as totalRetencion from equipos where lote = '".$rowFolio["folio_salida"]."' AND status='Retencion'";
-			 $resRetencion=mysql_query($sqlRetencion,$this->conexionBd());
-			 $rowRetencion=mysql_fetch_array($resRetencion);
-			 
-			 $sqlRetencion2="select count(*) as totalRetencion2 from equipos where lote = '".$rowFolio["folio_salida"]."' AND status='Retencion2'";
-			 $resRetencion2=mysql_query($sqlRetencion2,$this->conexionBd());
-			 $rowRetencion2=mysql_fetch_array($resRetencion2);
-			 
-			 $sqlValidando="select count(*) as totalValidando from equipos where lote = '".$rowFolio["folio_salida"]."' AND status='Validando'";
-			 $resValidando=mysql_query($sqlValidando,$this->conexionBd());
-			 $rowValidando=mysql_fetch_array($resValidando);
-			 
-			 $totalProceso=0;	$masmenos=0;
-			 $totalProceso=$rowWip["totalWip"]+$rowWip2["totalWip2"]+$rowWip3["totalWip3"]+$rowScrap["totalScrap"]+$rowEnviado["totalEnviado"]+$rowScrapEnviado["totalScrapEnviado"]+$rowRetencion["totalRetencion"]+$rowRetencion2["totalRetencion2"]+$rowValidando["totalValidando"];
-			 $masmenos=$rowFolio["cantidad"]-$totalProceso;
-			 //totales
-			 $totalReporte+=$rowFolio["cantidad"];
-			 $totalSubido+=$rowEq["totalBd"];
-			 $totalIqBd+=$totalProceso;
-			 $totalWip+=$rowWip["totalWip"];
-			 $totalWip2+=$rowWip2["totalWip2"];
-			 $totalWip3+=$rowWip3["totalWip3"];
-			 $totalScrap+=$rowScrap["totalScrap"];
-			 $totalScrapEnviado+=$rowScrapEnviado["totalScrapEnviado"];
-			 $totalEnviado+=$rowEnviado["totalEnviado"];
-			 $totalRetencion+=$rowRetencion["totalRetencion"];
-			 $totalRetencion2+=$rowRetencion2["totalRetencion2"];
-			 $totalValidando+=$rowValidando["totalValidando"];
-			 $totalmasmenos+=$masmenos;
-			 if($masmenos==0){
-			      $fondo="green"; $fuente="#FFF";
-			 }else{
-			      $fondo="red"; $fuente="#FFF";
-			 }
-			 //consulta para los dias en IQ
-			 $sqlDias="SELECT DATEDIFF('".date("Y-m-d")."','".$rowFolio["fecha"]."') AS diasT";
-			 $resDias=mysql_query($sqlDias,$this->conexionBd());
-			 $rowDias=mysql_fetch_array($resDias);
-			 if($rowDias["diasT"] >= 0 && $rowDias["diasT"] <=30 ){
-			      $fondoDias="green"; $fuenteDias="#FFF";
-			 }else if($rowDias["diasT"] >= 31 && $rowDias["diasT"] <=45 ){
-			      $fondoDias="yellow"; $fuenteDias="#000";
-			 }else if($rowDias["diasT"] >= 46 && $rowDias["diasT"] >=60 ){
-			      $fondoDias="red"; $fuenteDias="#FFF";
-			 }
-			 $divFolio="divFolio".$i;
+			for($i=0;$i<$eq;$i++){
+				$nom=str_replace(" ", "", $statusTotal[$i]);
+				$nomCamT="total".$nom;
+				$sql="SELECT count(*) as $nomCamT FROM equipos WHERE lote='".$rowFolio["folio_salida"]."' AND status='".$statusTotal[$i]."'";
+				//print($sql."<br>");
+				$exeSql=mysql_query($sql,$this->conexionBd());
+				if($exeSql==true){
+				$total=mysql_fetch_array($exeSql);
+				array_push($totalesXStatus,$total[$nomCamT]);
+				}else{
+					array_push($totalesXStatus,0);
+				}
+			}
+			for($j=$eq;$j<$totalArrS;$j++){
+				$nom=str_replace(" ", "", $statusTotal[$i]);
+				$nomCamT="total".$nom;
+				$sql2="SELECT count(*) as $nomCamT FROM equipos_enviados where lote = '".$rowFolio["folio_salida"]."' AND status='".$statusTotal[$j]."'";
+				//print($sql2."<br>");
+				$exeSql2=mysql_query($sql2,$this->conexionBd());
+				if($exeSql2==true){
+				$num=mysql_fetch_array($exeSql2);
+				array_push($totalesXStatus,$num[$nomCamT]);
+				}else{
+					array_push($totalesXStatus,0);
+				}
+				
+			}
+			 for($z=0;$z<count($totalesXStatus);$z++){
+				$resulV[$z]=$resulV[$z]+$totalesXStatus[$z];
+			}
+			$totalProceso=0;	$masmenos=0;
+			$totalProceso=array_sum($totalesXStatus);	
+			$masmenos=$rowFolio["cantidad"]-$totalProceso;
+			$totalReporte+=$rowFolio["cantidad"];
+			$totalSubido+=$rowEq["totalBd"];
+			$totalIqBd+=$totalProceso;
+			$totalmasmenos+=$masmenos;
+			if($masmenos==0){
+			     $fondo="green"; $fuente="#FFF";
+			}else{
+			     $fondo="red"; $fuente="#FFF";
+			}
+			//consulta para los dias en IQ
+			$sqlDias="SELECT DATEDIFF('".date("Y-m-d")."','".$rowFolio["fecha"]."') AS diasT";
+			$resDias=mysql_query($sqlDias,$this->conexionBd());
+			$rowDias=mysql_fetch_array($resDias);
+			if($rowDias["diasT"] >= 0 && $rowDias["diasT"] <=30 ){
+			     $fondoDias="green"; $fuenteDias="#FFF";
+			}else if($rowDias["diasT"] >= 31 && $rowDias["diasT"] <=45 ){
+			     $fondoDias="yellow"; $fuenteDias="#000";
+			}else if($rowDias["diasT"] >= 46 && $rowDias["diasT"] >=60 ){
+			     $fondoDias="red"; $fuenteDias="#FFF";
+			}
+			$divFolio="divFolio".$i;
 ?>
 			<tr class="<?=$claseCss;?>">
-			      <td ><a href="#" style="color:blue;">+</a></td>
-			      <td ><?=$rowFolio["folio_salida"];?></td>
-			      <td ><?=$rowFolio["cantidad"];?></td>
-			      <td ><?=$rowFolio["tipo"];?></td>
-			      <td ><?=$rowFolio["pedimento"];?></td>
-			      <td ><?=$rowFolio["fecha"];?></td>
-			      <td ><?=$rowFolio["factura"];?></td>
-			      <td ><?=$rowEq["totalBd"]." ".$msg;?></td>
-			      <td ><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','WIP','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos WIP" style="color:blue;"><?=$rowWip["totalWip"];?></a></td>
-			      <td ><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','WIP2','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos WIP2" style="color:blue;"><?=$rowWip2["totalWip2"];?></a></td>
-			      <td ><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','WIP3','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos WIP3" style="color:blue;"><?=$rowWip3["totalWip3"];?></a></td>
-			      <td ><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','SCRAP','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos Scrap" style="color:blue;"><?=$rowScrap["totalScrap"];?></a></td>
-			      <td ><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','ENVIADO','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos Scrap" style="color:blue;"><?=$rowEnviado["totalEnviado"];?></a></td>
-			      <td ><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','SCRAP ENVIADO','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos Scrap" style="color:blue;"><?=$rowScrapEnviado["totalScrapEnviado"];?></a></td>
-			      <td ><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','RETENCION','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos Retencion" style="color:blue;"><?=$rowRetencion["totalRetencion"];?></a></td>
-			      <td ><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','RETENCION2','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos Retencion 2" style="color:blue;"><?=$rowRetencion2["totalRetencion2"];?></a></td>
-			      <td ><?=$rowValidando["totalValidando"];?></td>
+			      <td style="background:#fff;"><a href="#" style="color:blue;">+</a></td>
+			      <td style="background:#E6E4E4;"><?=$rowFolio["folio_salida"];?></td>
+			      <td style="background:#fff;"><?=$rowFolio["cantidad"];?></td>
+			      <td style="background:#E6E4E4;"><?=$rowFolio["tipo"];?></td>
+			      <td style="background:#fff;"><?=$rowFolio["pedimento"];?></td>
+			      <td style="background:#E6E4E4;"><?=$rowFolio["fecha"];?></td>
+			      <td style="background:#fff;"><?=$rowFolio["factura"];?></td>
+			      <td style="background:#E6E4E4;"><?=$rowEq["totalBd"]." ".$msg;?></td>
+			      <?
+			      $colorF="#fff";
+			      	for($k=0;$k<$totalArrS;$k++){
+			      		if($colorF=="#E6E4E4"){
+			      			$colorF="#fff";
+			      		}else{
+			      			$colorF="#E6E4E4";
+			      		}
+			      	?><td style="background: <?=$colorF;?>;"><a href="#" onclick="mostrarResumenListadoReporte('<?=$divFolio;?>','<?=$statusTotal[$k]?>','<?=$rowFolio["folio_salida"];?>')" title="Ver Equipos <?=$statusTotal[$k]?>" style="color:blue;"><?=$totalesXStatus[$k];?></a></td><?
+			      }
+			      ?>
 			      <td style="background: <?=$color;?>;border-bottom: 1px solid #CCC;border-right: 1px solid #CCC;height: 15px;padding: 5px;font-weight:bold;text-align:center;"><?=$totalProceso;?></td>
 			      <td style="background: <?=$fondo;?>;color:<?=$fuente;?>;border-bottom: 1px solid #CCC;border-right: 1px solid #CCC;height: 15px;padding: 5px;text-align:center;"><?=$masmenos;?></td>
 			      <td style="background: <?=$fondoDias;?>;color:<?=$fuenteDias;?>;border-bottom: 1px solid #CCC;border-right: 1px solid #CCC;height: 15px;padding: 5px;font-weight:bold;text-align:center;"><?=$rowDias["diasT"];?></td>
@@ -248,7 +241,7 @@ aqui esta
 			</tr>
 			<tr>
 			      <td colspan="8"></td>
-			      <td colspan="12"><div id="<?=$divFolio;?>" style="display: none;background: #f0f0f0;"></div></td>
+			      <td colspan="<?=$td?>"><div id="<?=$divFolio;?>" style="display: none;background: #f0f0f0;"></div></td>
 			</tr>
 <?
 		    ($claseCss=="listadoFoliosGrid1") ? $claseCss="listadoFoliosGrid2" : $claseCss="listadoFoliosGrid1";
@@ -256,22 +249,19 @@ aqui esta
 		  }
 ?>
 			 <tr>
-			      <td colspan="20"><hr style="background: #CCC;"></td>
+			      <td colspan="<?=$t2;?>"><hr style="background: #CCC;"></td>
 			 </tr>
 			 <tr>
 			      <td colspan="2" style="font-weight: bold;font-size: 14px;text-align: center;">Totales</td>
 			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalReporte;?></td>
 			      <td colspan="4" style="font-weight: bold;font-size: 12px;text-align: center;">&nbsp;</td>
 			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalSubido;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalWip;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalWip2;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalWip3;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalScrap;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalEnviado;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalScrapEnviado;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalRetencion;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalRetencion2;?></td>
-			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalValidando;?></td>
+			      <?for($z=0;$z<count($resulV);$z++){
+			      	?>
+			      	<td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$resulV[$z];?></td>
+			      	<?
+			      }
+			      ?>
 			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalIqBd;?></td>
 			      <td style="font-weight: bold;font-size: 12px;text-align: center;"><?=$totalmasmenos;?></td>
 			      <td style="font-weight: bold;font-size: 12px;text-align: center;">&nbsp;</td>
